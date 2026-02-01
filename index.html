@@ -6,41 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    :root {
-      --mq-bg: #020617;
-      --mq-panel: #020617;
-      --mq-accent: #22c55e;
-      --mq-accent-soft: rgba(34, 197, 94, 0.12);
-      --mq-border: #1f2937;
-      --mq-text: #e5e7eb;
-      --mq-muted: #9ca3af;
-      --mq-scale: 1;
+    :root{
+      --mq-bg:#020617;
+      --mq-panel:#0b1226;
+      --mq-accent:#22c55e;
+      --mq-accent-soft:rgba(34,197,94,.12);
+      --mq-border:#1f2937;
+      --mq-text:#e5e7eb;
+      --mq-muted:#9ca3af;
+      --mq-warn:#facc15;
+      --mq-scale:1;
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #020617 0, #020617 50%, #000 100%);
-      color: var(--mq-text);
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,var(--mq-bg) 0,var(--mq-bg) 55%,#000 100%);
+      color:var(--mq-text);
     }
 
     /* High contrast */
-    body.mq-high-contrast {
-      background: #000 !important;
-      color: #fff !important;
-    }
+    body.mq-high-contrast{background:#000!important;color:#fff!important}
     body.mq-high-contrast .mq-topbar,
-    body.mq-high-contrast .mq-shell {
-      background: #000 !important;
-    }
+    body.mq-high-contrast .mq-shell{background:#000!important}
     body.mq-high-contrast .mq-panel,
-    body.mq-high-contrast .mq-game-card {
-      background: #000 !important;
-      border-color: #ffffff !important;
-      box-shadow: none !important;
-    }
+    body.mq-high-contrast .mq-game-card{background:#000!important;border-color:#fff!important;box-shadow:none!important}
     body.mq-high-contrast .mq-question-text,
     body.mq-high-contrast .mq-work,
     body.mq-high-contrast .mq-panel-title,
@@ -50,435 +40,273 @@
     body.mq-high-contrast .mq-badge-chip,
     body.mq-high-contrast .mq-footer-note,
     body.mq-high-contrast #mq-queue-note,
-    body.mq-high-contrast #mq-scoreboard {
-      color: #ffffff !important;
-      border-color: #ffffff !important;
-    }
-    body.mq-high-contrast .mq-option-btn {
-      background: #000000 !important;
-      color: #ffffff !important;
-      border-color: #ffffff !important;
-    }
-    body.mq-high-contrast .mq-option-btn.mq-correct {
-      background: #00ff00 !important;
-      color: #000000 !important;
-      border-color: #00ff00 !important;
-    }
-    body.mq-high-contrast .mq-option-btn.mq-incorrect {
-      background: #ff0033 !important;
-      color: #ffffff !important;
-      border-color: #ff0033 !important;
-    }
+    body.mq-high-contrast #mq-scoreboard,
+    body.mq-high-contrast #mq-about{color:#fff!important;border-color:#fff!important}
+    body.mq-high-contrast .mq-option-btn{background:#000!important;color:#fff!important;border-color:#fff!important}
+    body.mq-high-contrast .mq-option-btn.mq-correct{background:#00ff00!important;color:#000!important;border-color:#00ff00!important}
+    body.mq-high-contrast .mq-option-btn.mq-incorrect{background:#ff0033!important;color:#fff!important;border-color:#ff0033!important}
     body.mq-high-contrast .mq-small-btn,
-    body.mq-high-contrast .mq-reset-btn {
-      background: #000000 !important;
-      color: #ffffff !important;
-      border-color: #ffffff !important;
-    }
-    body.mq-high-contrast .mq-modebar {
-      border-color: #ffffff !important;
-    }
-    body.mq-high-contrast .mq-mode-btn {
-      color: #ffffff !important;
-    }
-    body.mq-high-contrast .mq-mode-btn-active {
-      background: #ffffff !important;
-      color: #000000 !important;
-    }
+    body.mq-high-contrast .mq-reset-btn{background:#000!important;color:#fff!important;border-color:#fff!important}
+    body.mq-high-contrast .mq-modebar{border-color:#fff!important}
+    body.mq-high-contrast .mq-mode-btn{color:#fff!important}
+    body.mq-high-contrast .mq-mode-btn-active{background:#fff!important;color:#000!important}
 
     /* Dyslexic mode */
-    body.mq-dyslexic {
-      font-family: "OpenDyslexic", "Comic Sans MS", "Arial Rounded MT Bold",
-        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.5;
+    body.mq-dyslexic{
+      font-family:"OpenDyslexic","Comic Sans MS","Arial Rounded MT Bold",
+        system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.5;
     }
-    body.mq-dyslexic #mq-root { letter-spacing: 0.02em; }
+    body.mq-dyslexic #mq-root{letter-spacing:.02em}
 
-    #mq-root {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      transform-origin: top center;
-      transform: scale(var(--mq-scale));
-    }
-
-    .mq-topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--mq-border);
-      background: #020617;
-      position: sticky;
-      top: 0;
-      z-index: 20;
+    #mq-root{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      transform-origin:top center;
+      transform:scale(var(--mq-scale));
     }
 
-    .mq-topbar-title {
-      font-weight: 650;
-      letter-spacing: 0.02em;
-      font-size: 14px;
-      color: #e5e7eb;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .mq-topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 16px;
+      border-bottom:1px solid var(--mq-border);
+      background:var(--mq-bg);
+      position:sticky;top:0;z-index:20;
+    }
+    .mq-topbar-title{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .mq-topbar-title strong{
+      font-size:15px;
+      letter-spacing:.04em;
+      font-weight:700;
+      color:var(--mq-text);
+    }
+    .mq-topbar-title span{
+      font-size:11px;
+      color:var(--mq-muted);
     }
 
-    .mq-topbar-title .mq-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--mq-accent);
-      box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
-      display: inline-block;
+    .mq-modebar{
+      display:inline-flex;
+      gap:4px;
+      border-radius:999px;
+      padding:2px;
+      background:var(--mq-bg);
+      border:1px solid var(--mq-border);
+    }
+    .mq-mode-btn{
+      border:none;
+      background:transparent;
+      color:var(--mq-muted);
+      font-size:12px;
+      padding:5px 12px;
+      border-radius:999px;
+      cursor:default;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      user-select:none;
+    }
+    .mq-mode-btn-active{
+      background:var(--mq-accent-soft);
+      color:#bbf7d0;
+      font-weight:700;
     }
 
-    .mq-modebar {
-      display: inline-flex;
-      gap: 4px;
-      border-radius: 999px;
-      padding: 2px;
-      background: #020617;
-      border: 1px solid #1f2937;
+    .mq-shell{display:flex;flex:1;padding:12px;gap:12px}
+    .mq-column{display:flex;flex-direction:column;gap:12px}
+    .mq-column-left{width:270px;max-width:36%}
+    .mq-column-center{flex:1;min-width:0}
+    .mq-column-right{width:270px;max-width:36%}
+    @media(max-width:900px){
+      .mq-shell{flex-direction:column}
+      .mq-column-left,.mq-column-right{width:100%;max-width:100%}
     }
 
-    .mq-mode-btn {
-      border: none;
-      background: transparent;
-      color: #9ca3af;
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      cursor: default;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .mq-panel{
+      background:rgba(15,23,42,.92);
+      border-radius:16px;
+      border:1px solid rgba(148,163,184,.22);
+      padding:10px 12px;
+      box-shadow:0 18px 40px rgba(15,23,42,.7);
+    }
+    .mq-panel-title{
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--mq-muted);
+      margin-bottom:6px;
+    }
+    .mq-panel-sub{
+      font-size:11px;
+      color:#6b7280;
+      margin-bottom:8px;
+      line-height:1.35;
     }
 
-    .mq-mode-btn-active {
-      background: var(--mq-accent-soft);
-      color: #bbf7d0;
-      font-weight: 650;
+    .mq-field{margin-bottom:8px;display:flex;flex-direction:column;gap:3px}
+    .mq-label{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--mq-muted);
+    }
+    .mq-player-row{display:flex;gap:6px;align-items:center}
+    .mq-player-row select{flex:1}
+
+    select,input[type="range"]{
+      width:100%;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid var(--mq-border);
+      background:var(--mq-bg);
+      color:var(--mq-text);
+      font-size:13px;
     }
 
-    .mq-shell {
-      display: flex;
-      flex: 1;
-      padding: 12px;
-      gap: 12px;
+    .mq-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .mq-toggle-row label{font-size:12px;color:var(--mq-muted)}
+    .mq-toggle-row input[type="checkbox"]{transform:scale(1.1)}
+
+    .mq-game-card{
+      background:rgba(15,23,42,.92);
+      border-radius:20px;
+      border:1px solid rgba(148,163,184,.25);
+      padding:14px 16px 16px;
+      box-shadow:0 22px 50px rgba(15,23,42,.8);
     }
-
-    .mq-column {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .mq-game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .mq-game-title{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--mq-muted);
     }
-
-    .mq-column-left {
-      width: 260px;
-      max-width: 35%;
+    #game-container{
+      width:100%;
+      height:70px;
+      border-radius:16px;
+      border:1px solid var(--mq-border);
+      background:linear-gradient(135deg, rgba(34,197,94,.10), rgba(2,6,23,.9));
+      margin-bottom:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 14px;
+      gap:10px;
     }
-    .mq-column-center {
-      flex: 1;
-      min-width: 0;
+    #game-container .mq-mini-stat{
+      display:flex;flex-direction:column;gap:2px;min-width:0
     }
-    .mq-column-right {
-      width: 260px;
-      max-width: 35%;
+    #game-container .mq-mini-stat strong{
+      font-size:12px;color:var(--mq-text)
     }
-
-    @media (max-width: 900px) {
-      .mq-shell { flex-direction: column; }
-      .mq-column-left,
-      .mq-column-right {
-        width: 100%;
-        max-width: 100%;
-      }
+    #game-container .mq-mini-stat span{
+      font-size:10px;color:var(--mq-muted)
     }
-
-    .mq-panel {
-      background: rgba(15, 23, 42, 0.95);
-      border-radius: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      padding: 10px 12px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+    .mq-question-text{font-size:14px;margin-bottom:6px;color:var(--mq-text)}
+    .mq-work{
+      font-family:"SF Mono",ui-monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:10px;
+      background:var(--mq-bg);
+      border:1px solid #111827;
+      color:var(--mq-text);
+      margin-bottom:6px;
+      white-space:pre-wrap;
     }
-
-    .mq-panel-title {
-      font-size: 13px;
-      font-weight: 650;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #9ca3af;
-      margin-bottom: 6px;
+    .mq-options{display:flex;flex-direction:column;gap:8px;margin-top:8px;margin-bottom:8px}
+    .mq-option-btn{
+      text-align:left;
+      border-radius:12px;
+      border:1px solid var(--mq-border);
+      padding:10px 12px;
+      background:var(--mq-bg);
+      color:var(--mq-text);
+      font-size:13px;
+      cursor:pointer;
+      transition:transform .07s ease, border-color .14s ease;
     }
+    .mq-option-btn:hover:not(:disabled){border-color:#334155;transform:translateY(-1px)}
+    .mq-option-btn:disabled{opacity:.86;cursor:default}
+    .mq-option-btn.mq-correct{background:rgba(34,197,94,.12);border-color:var(--mq-accent)}
+    .mq-option-btn.mq-incorrect{background:rgba(239,68,68,.12);border-color:#f97373}
 
-    .mq-panel-sub {
-      font-size: 11px;
-      color: #6b7280;
-      margin-bottom: 8px;
+    .mq-feedback{font-size:12px;color:var(--mq-muted);min-height:18px;line-height:1.35}
+    .mq-feedback-correct{color:#bbf7d0}
+    .mq-feedback-encouraging{color:var(--mq-warn)}
+    .mq-queue-note{font-size:11px;color:#6b7280;margin-top:2px}
+
+    .mq-insight-log{font-size:11px;color:var(--mq-muted);max-height:140px;overflow-y:auto;padding-right:4px;line-height:1.35}
+    .mq-badges-row{display:flex;flex-wrap:wrap;gap:6px}
+    .mq-badge-chip{
+      font-size:10px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--mq-border);
+      color:var(--mq-muted);
+      background:var(--mq-bg);
+      white-space:nowrap;
     }
+    .mq-badge-earned{background:rgba(34,197,94,.16);color:#bbf7d0;border-color:var(--mq-accent)}
 
-    .mq-field {
-      margin-bottom: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+    .mq-stat-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+    .mq-stat-pill{
+      font-size:11px;
+      padding:4px 10px;
+      border-radius:999px;
+      background:var(--mq-bg);
+      border:1px solid var(--mq-border);
+      color:var(--mq-muted);
     }
+    .mq-stat-value{color:var(--mq-text);font-weight:700;margin-left:6px}
 
-    .mq-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #9ca3af;
+    .mq-reset-btn,.mq-small-btn{
+      border-radius:999px;
+      border:1px solid var(--mq-border);
+      padding:6px 10px;
+      background:var(--mq-bg);
+      color:var(--mq-text);
+      font-size:11px;
+      cursor:pointer;
     }
+    .mq-reset-btn:hover,.mq-small-btn:hover{background:#111827}
+    .mq-reset-btn{border-color:#f97373;color:#fecaca}
+    .mq-sfx-on{border-color:var(--mq-accent);color:#bbf7d0}
 
-    .mq-player-row {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .mq-player-row select { flex: 1; }
-
-    select,
-    input[type="range"] {
-      width: 100%;
-      padding: 4px 6px;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 13px;
-    }
-
-    .mq-toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .mq-toggle-row label {
-      font-size: 12px;
-      color: #9ca3af;
-    }
-
-    .mq-toggle-row input[type="checkbox"] { transform: scale(1.1); }
-
-    .mq-game-card {
-      background: rgba(15, 23, 42, 0.95);
-      border-radius: 20px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 14px 16px 16px;
-      box-shadow: 0 22px 50px rgba(15, 23, 42, 0.8);
-    }
-
-    .mq-game-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .mq-game-title {
-      font-size: 14px;
-      font-weight: 650;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9ca3af;
-    }
-
-    #game-container {
-      width: 100%;
-      height: 180px;
-      border-radius: 16px;
-      border: 1px solid #1f2937;
-      background: radial-gradient(circle at top, #020617 0, #020617 50%, #000 100%);
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-
-    .mq-question-text {
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: #e5e7eb;
-    }
-
-    .mq-work {
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 13px;
-      padding: 6px 8px;
-      border-radius: 8px;
-      background: #020617;
-      border: 1px solid #111827;
-      color: #e5e7eb;
-      margin-bottom: 6px;
-      white-space: pre-wrap;
-    }
-
-    .mq-options {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
-      margin-bottom: 8px;
-    }
-
-    .mq-option-btn {
-      text-align: left;
-      border-radius: 10px;
-      border: 1px solid #1f2937;
-      padding: 8px 10px;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.14s ease, border-color 0.14s ease, transform 0.07s ease;
-    }
-
-    .mq-option-btn:hover:not(:disabled) {
-      background: #020617;
-      border-color: #334155;
-      transform: translateY(-1px);
-    }
-
-    .mq-option-btn:disabled {
-      opacity: 0.86;
-      cursor: default;
-    }
-
-    .mq-option-btn.mq-correct {
-      background: rgba(34, 197, 94, 0.12);
-      border-color: #22c55e;
-    }
-
-    .mq-option-btn.mq-incorrect {
-      background: rgba(239, 68, 68, 0.12);
-      border-color: #f97373;
-    }
-
-    .mq-feedback {
-      font-size: 12px;
-      color: #9ca3af;
-      min-height: 18px;
-    }
-
-    .mq-feedback-correct { color: #bbf7d0; }
-    .mq-feedback-encouraging { color: #facc15; }
-
-    .mq-queue-note {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-
-    .mq-insight-log {
-      font-size: 11px;
-      color: #9ca3af;
-      max-height: 140px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .mq-badges-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .mq-badge-chip {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      border: 1px solid #1f2937;
-      color: #9ca3af;
-      background: #020617;
-      white-space: nowrap;
-    }
-
-    .mq-badge-earned {
-      background: rgba(34, 197, 94, 0.16);
-      color: #bbf7d0;
-      border-color: #22c55e;
-    }
-
-    .mq-stat-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 6px;
-    }
-
-    .mq-stat-pill {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #020617;
-      border: 1px solid #1f2937;
-      color: #9ca3af;
-    }
-
-    .mq-stat-value {
-      color: #e5e7eb;
-      font-weight: 550;
-      margin-left: 4px;
-    }
-
-    .mq-reset-btn,
-    .mq-small-btn {
-      border-radius: 999px;
-      border: 1px solid #1f2937;
-      padding: 4px 10px;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 11px;
-      cursor: pointer;
-    }
-
-    .mq-reset-btn:hover,
-    .mq-small-btn:hover { background: #111827; }
-
-    .mq-reset-btn {
-      border-color: #f97373;
-      color: #fecaca;
-    }
-
-    .mq-sfx-on {
-      border-color: #22c55e;
-      color: #bbf7d0;
-    }
-
-    .mq-footer-note {
-      font-size: 10px;
-      color: #6b7280;
-      margin-top: 4px;
-      line-height: 1.35;
-    }
+    .mq-footer-note{font-size:10px;color:#6b7280;margin-top:6px;line-height:1.35}
+    #mq-about{font-size:11px;color:var(--mq-muted);line-height:1.45}
+    #mq-about ul{margin:6px 0 0;padding-left:18px}
   </style>
 </head>
 
 <body>
   <div id="mq-root">
-    <!-- Top bar -->
     <div class="mq-topbar">
       <div class="mq-topbar-title">
-        <span class="mq-dot"></span>
-        BeTheMath — Error Detective
+        <strong>BeTheMath — Error Detective</strong>
+        <span>Fix mistakes fast • Learn why • Stored only on your device</span>
       </div>
       <div class="mq-modebar" aria-label="Mode">
-        <span class="mq-mode-btn mq-mode-btn-active" title="Math mode only (for now)">
-          🧠 Math
-        </span>
+        <div class="mq-mode-btn mq-mode-btn-active">🧠 Math</div>
       </div>
     </div>
 
     <div class="mq-shell">
-      <!-- Left column: controls -->
+      <!-- Left: Controls -->
       <div class="mq-column mq-column-left">
         <div class="mq-panel">
           <div class="mq-panel-title">Session Settings</div>
-          <div class="mq-panel-sub">Choose player, grade band, and track. Everything saves locally on this device.</div>
+          <div class="mq-panel-sub">Choose player, level, track, and accessibility options.</div>
 
           <div class="mq-field">
             <span class="mq-label">Player</span>
@@ -514,7 +342,7 @@
           </div>
 
           <div class="mq-field">
-            <span class="mq-label">Auto-advance (sec)</span>
+            <span class="mq-label">Auto-advance (seconds)</span>
             <input id="mq-delay" type="range" min="3" max="20" value="5" />
           </div>
 
@@ -523,8 +351,7 @@
             <input id="mq-scale" type="range" min="80" max="130" value="100" />
           </div>
 
-          <div class="mq-panel-sub">Accessibility</div>
-
+          <div class="mq-panel-sub" style="margin-top:8px;">Accessibility</div>
           <div class="mq-toggle-row">
             <label for="mq-high-contrast">High contrast</label>
             <input id="mq-high-contrast" type="checkbox" />
@@ -534,49 +361,69 @@
             <input id="mq-dyslexic" type="checkbox" />
           </div>
 
-          <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+          <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
             <button id="mq-sfx-toggle" type="button" class="mq-small-btn">SFX: ON</button>
             <button id="mq-reset" type="button" class="mq-reset-btn">Reset Progress</button>
           </div>
 
           <div class="mq-footer-note" id="mq-autosave">Ready.</div>
-          <div class="mq-footer-note">
-            ✅ No accounts • ✅ No ads • ✅ No tracking<br />
-            Player profiles and progress are stored only on this device (localStorage).
+          <div class="mq-footer-note">Player profiles and progress are stored only on this device (localStorage).</div>
+        </div>
+
+        <div class="mq-panel">
+          <div class="mq-panel-title">About</div>
+          <div class="mq-panel-sub">Customer-first, calm, and private by design.</div>
+          <div id="mq-about">
+            <strong>BeTheMath</strong> helps learners become “error detectives”: spot the mistaken idea, then apply the clean fix.
+            <ul>
+              <li><strong>Practice tool</strong> — not a test, no grades, no pressure.</li>
+              <li><strong>Private by default</strong> — no accounts, no tracking, no uploads.</li>
+              <li><strong>Local-only progress</strong> — stored in your browser on this device.</li>
+              <li><strong>Explain → Fix → Repeat</strong> — each item includes the misconception, the principle, and the corrected work.</li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <!-- Center column: main game -->
+      <!-- Center: Game -->
       <div class="mq-column mq-column-center">
         <div class="mq-game-card">
           <div class="mq-game-header">
             <div class="mq-game-title">Current Challenge</div>
-            <div style="font-size: 11px; color: #6b7280;" id="mq-queue-note">Loading your first error…</div>
+            <div style="font-size:11px;color:#6b7280;" id="mq-queue-note">Loading your first item…</div>
           </div>
 
-          <div id="game-container" aria-hidden="true"></div>
+          <div id="game-container">
+            <div class="mq-mini-stat">
+              <strong id="mq-mini-focus">6–8 • Operations</strong>
+              <span id="mq-mini-type">Focus: common errors &amp; clean fixes</span>
+            </div>
+            <div class="mq-mini-stat" style="text-align:right;">
+              <strong>XP <span id="mq-mini-xp">0</span></strong>
+              <span>Streak <span id="mq-mini-streak">0</span></span>
+            </div>
+          </div>
 
-          <div class="mq-question-text" id="mq-question">Loading your first error…</div>
+          <div class="mq-question-text" id="mq-question">Loading…</div>
           <div class="mq-work" id="mq-work">Student work will appear here.</div>
 
           <div class="mq-options" id="mq-options"></div>
 
           <div class="mq-feedback" id="mq-feedback">Pick the best explanation or fix for the student's work.</div>
 
-          <div style="margin-top: 6px; display: flex; justify-content: flex-end;">
+          <div style="margin-top:6px; display:flex; justify-content:flex-end;">
             <button id="mq-next" type="button" class="mq-small-btn" disabled>Next ▶</button>
           </div>
         </div>
 
-        <div class="mq-panel" style="margin-top: 10px;">
+        <div class="mq-panel" style="margin-top:10px;">
           <div class="mq-panel-title">Insights</div>
-          <div class="mq-panel-sub">Each time you fix an error, the insight appears here for quick review.</div>
+          <div class="mq-panel-sub">Each time you fix an error, a short insight appears here for quick review.</div>
           <div class="mq-insight-log" id="mq-insight-log"></div>
         </div>
       </div>
 
-      <!-- Right column: stats, badges, scoreboard, teacher -->
+      <!-- Right: Stats -->
       <div class="mq-column mq-column-right">
         <div class="mq-panel">
           <div class="mq-panel-title">Session Stats</div>
@@ -588,29 +435,28 @@
           </div>
         </div>
 
-        <div class="mq-panel" style="margin-top: 10px;">
+        <div class="mq-panel" style="margin-top:10px;">
           <div class="mq-panel-title">Badges</div>
-          <div class="mq-panel-sub">Earn badges for streaks, XP milestones, and working your Fix-It Queue.</div>
+          <div class="mq-panel-sub">Earn badges for streaks, XP milestones, and returning to your Fix-It Queue.</div>
           <div class="mq-badges-row" id="mq-badges"></div>
         </div>
 
-        <div class="mq-panel" style="margin-top: 10px;">
+        <div class="mq-panel" style="margin-top:10px;">
           <div class="mq-panel-title">Scoreboard</div>
           <div class="mq-panel-sub">Local players on this device, sorted by XP.</div>
-          <div id="mq-scoreboard" style="font-size: 11px; color: #9ca3af; line-height: 1.4;">No players yet.</div>
+          <div id="mq-scoreboard" style="font-size:11px;color:var(--mq-muted);line-height:1.4;">No players yet.</div>
           <div class="mq-footer-note">This scoreboard never leaves this browser. It is not shared online.</div>
         </div>
 
-        <div class="mq-panel" style="margin-top: 10px;">
+        <div class="mq-panel" style="margin-top:10px;">
           <div class="mq-panel-title">Teacher / Parent Notes</div>
-          <div class="mq-panel-sub">Quick guidance for using BeTheMath at school or at home.</div>
-          <div style="font-size: 11px; color: #9ca3af; line-height: 1.4;">
-            <ul style="padding-left: 18px; margin: 0;">
-              <li>Start with <strong>6–8</strong>, then adjust grade band as needed.</li>
-              <li><strong>Operations</strong> fixes procedural errors. <strong>Reasoning</strong> fixes concept mistakes. <strong>Logic &amp; Patterns</strong> builds structured thinking.</li>
-              <li>When a learner misses an item, read the hint, then ask: “What was the first wrong idea?”</li>
-              <li>Use “Insights” as a 60-second review at the end.</li>
-              <li>Privacy note: the app stores progress only on the current device.</li>
+          <div class="mq-panel-sub">Simple, ethical use: low-pressure practice + clear feedback.</div>
+          <div style="font-size:11px;color:var(--mq-muted);line-height:1.4;">
+            <ul style="padding-left:18px;margin:0;">
+              <li>Use 5–10 minutes as a warm-up (same band + track).</li>
+              <li>Ask: “What mistaken idea caused this?” then “What’s the clean fix?”</li>
+              <li>If a learner misses an item, read the hint together before the next one.</li>
+              <li>Rotate tracks: Operations (procedure) → Reasoning (concept) → Logic &amp; Patterns (thinking).</li>
             </ul>
           </div>
         </div>
@@ -618,837 +464,494 @@
     </div>
   </div>
 
-  <!-- Phaser 3 (loaded but not required yet for animations) -->
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.0/dist/phaser.min.js"></script>
-
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // ----- Content library -----
+      // -----------------------------
+      // Content: Items (errors + fixes)
+      // -----------------------------
       var ITEMS = [
-        // -------------------------
-        // K–2 — Operations
-        // -------------------------
+        // ---------------- K–2 OPERATIONS ----------------
         {
-          id: "k2-op-1",
-          gradeBand: "K-2",
-          track: "operations",
-          difficulty: "easy",
-          errorType: "digit-append",
-          inattention: false,
-          prompt: "A student writes 7 + 5 = 75. What went wrong?",
-          work: "Student work:\n7 + 5 = 75",
-          options: [
-            "They wrote the digits side by side instead of actually adding 7 and 5.",
-            "They subtracted 5 from 7 instead of adding.",
-            "They multiplied 7 × 5 instead of adding.",
-            "They changed the 5 into 50 before adding."
+          id:"k2-op-1", gradeBand:"K-2", track:"operations", difficulty:"easy",
+          errorType:"digit-append", inattention:false,
+          prompt:"A student writes 7 + 5 = 75. What went wrong?",
+          work:"Student work: 7 + 5 = 75",
+          options:[
+            "They stuck the digits together instead of adding. 7 + 5 is 12.",
+            "They subtracted 5 from 7.",
+            "They multiplied 7 × 5.",
+            "They turned 5 into 50."
           ],
-          correctIndex: 0,
-          hint: "What is 7 + 5 really equal to?",
-          insight: "They treated addition like “sticking digits together.” Correct: 7 + 5 = 12, not 75."
+          correctIndex:0,
+          hint:"First ask: what is 7 + 5 really equal to?",
+          insight:"Misconception: “addition means stick digits together.” Principle: addition combines quantities. Correct work: 7 + 5 = 12."
         },
         {
-          id: "k2-op-2",
-          gradeBand: "K-2",
-          track: "operations",
-          difficulty: "easy",
-          errorType: "extra-zero",
-          inattention: true,
-          prompt: "A student solves 10 − 7 = 3, but writes 30 as the answer.",
-          work: "Student work:\n10 − 7 = 30",
-          options: [
-            "They added an extra zero out of habit, making the answer ten times too big.",
-            "They subtracted 7 from the wrong number.",
+          id:"k2-op-2", gradeBand:"K-2", track:"operations", difficulty:"easy",
+          errorType:"extra-zero", inattention:true,
+          prompt:"A student computes 10 − 7 = 3, but writes 30 as the answer.",
+          work:"Student work: 10 − 7 = 30",
+          options:[
+            "They added a zero after getting 3, making it ten times too large.",
+            "They subtracted in the wrong order.",
             "They thought 3 and 30 mean the same amount.",
-            "They added 7 instead of subtracting it."
+            "They added 7 instead of subtracting."
           ],
-          correctIndex: 0,
-          hint: "Is 30 close to 10 or much bigger than 10?",
-          insight: "They did 10 − 7 correctly (=3) but tacked on a zero. Adding a zero makes the answer 10× too large."
+          correctIndex:0,
+          hint:"Is 30 close to 10, or much bigger than 10?",
+          insight:"Misconception: “add a zero to look right.” Principle: a zero changes place value. Correct work: 10 − 7 = 3 (not 30)."
         },
 
-        // K–2 — Reasoning
+        // ---------------- K–2 REASONING ----------------
         {
-          id: "k2-re-1",
-          gradeBand: "K-2",
-          track: "reasoning",
-          difficulty: "easy",
-          errorType: "place-value-language",
-          inattention: false,
-          prompt: "A student says 15 is 'one ten and five ones', then writes 105.",
-          work: "Student work:\n15 = 105",
-          options: [
-            "They tried to show tens and ones by writing all three digits, instead of using 15.",
+          id:"k2-re-1", gradeBand:"K-2", track:"reasoning", difficulty:"easy",
+          errorType:"place-value-language", inattention:false,
+          prompt:"A student says 15 is 'one ten and five ones', then writes 105.",
+          work:"Student work: 15 = 105",
+          options:[
+            "They confused place-value meaning with writing extra digits. 15 already means 1 ten and 5 ones.",
             "They subtracted 10 from 105.",
             "They thought 15 has one hundred and five ones.",
-            "They meant 10 + 5 but forgot how to write it."
+            "They forgot to add 10 + 5."
           ],
-          correctIndex: 0,
-          hint: "How do we normally write one ten and five ones?",
-          insight: "15 already means 1 ten and 5 ones. 105 is a different number (one hundred five)."
+          correctIndex:0,
+          hint:"How do we normally write one ten and five ones?",
+          insight:"Misconception: “show tens/ones by writing 1,0,5.” Principle: place value is built into the digits. Correct number is 15."
         },
 
-        // K–2 — Logic & Patterns
+        // ---------------- K–2 LOGIC ----------------
         {
-          id: "k2-lo-1",
-          gradeBand: "K-2",
-          track: "logic",
-          difficulty: "easy",
-          errorType: "pattern-repeat",
-          inattention: false,
-          prompt: "A student sees the pattern: 🔵 🔴 🔵 🔴 🔵 __ and fills in 🔵. What’s the better answer?",
-          work: "Pattern:\n🔵 🔴 🔵 🔴 🔵 __\nStudent fills: 🔵",
-          options: [
-            "🔴 (the colors alternate: blue, red, blue, red…)",
-            "🔵 (because blue appears more often)",
-            "Either one is correct",
-            "None of the above"
+          id:"k2-lo-1", gradeBand:"K-2", track:"logic", difficulty:"easy",
+          errorType:"pattern-next", inattention:false,
+          prompt:"Pattern: 2, 4, 6, 8, ___. What comes next?",
+          work:"Student idea: 'It goes 2,4,6,8... maybe 9?'",
+          options:[
+            "10, because the pattern adds 2 each time (even numbers).",
+            "9, because 9 comes after 8.",
+            "12, because you double 6.",
+            "8, because it repeats 8."
           ],
-          correctIndex: 0,
-          hint: "Look for a repeating rule, not the most common color.",
-          insight: "The pattern alternates, so after 🔵 comes 🔴."
+          correctIndex:0,
+          hint:"Look at the change between numbers: +2 each time.",
+          insight:"Misconception: “just pick the next counting number.” Principle: patterns use a rule. Correct continuation: 10."
         },
 
-        // -------------------------
-        // 3–5 — Operations
-        // -------------------------
+        // ---------------- 3–5 OPERATIONS ----------------
         {
-          id: "35-op-1",
-          gradeBand: "3-5",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "carry-borrow",
-          inattention: false,
-          prompt: "A student solves 27 + 38 and writes 55.",
-          work: "Student work:\n27 + 38 = 55",
-          options: [
-            "They added only the tens and forgot to add and carry from the ones place.",
-            "They subtracted 27 from 38 instead of adding.",
-            "They multiplied the digits in each number.",
-            "They rounded both numbers first and never went back."
+          id:"35-op-1", gradeBand:"3-5", track:"operations", difficulty:"medium",
+          errorType:"carry-borrow", inattention:false,
+          prompt:"A student solves 27 + 38 and writes 55.",
+          work:"Student work: 27 + 38 = 55",
+          options:[
+            "They added tens but didn’t carry from 7 + 8 = 15. The correct sum is 65.",
+            "They subtracted 27 from 38.",
+            "They multiplied digits instead of adding.",
+            "They rounded and forgot to adjust."
           ],
-          correctIndex: 0,
-          hint: "Add the ones (7 + 8) first. What happens to the 1 in 15?",
-          insight: "Correct: 7+8=15 (write 5 carry 1), then 2+3+1=6 → 65."
+          correctIndex:0,
+          hint:"Add ones first: 7 + 8 = 15. What happens to the 1?",
+          insight:"Misconception: “ignore the carry.” Principle: place value requires regrouping. Correct work: 7+8=15 → write 5 carry 1 → 2+3+1=6 → 65."
         },
 
-        // 3–5 — Reasoning
+        // ---------------- 3–5 REASONING ----------------
         {
-          id: "35-re-1",
-          gradeBand: "3-5",
-          track: "reasoning",
-          difficulty: "medium",
-          errorType: "percent-decimal",
-          inattention: false,
-          prompt: "A student says 0.5 is the same as 5%.",
-          work: "Student idea:\n0.5 = 5%",
-          options: [
-            "They forgot that 0.5 means 50%, not 5%.",
+          id:"35-re-1", gradeBand:"3-5", track:"reasoning", difficulty:"medium",
+          errorType:"percent-decimal", inattention:false,
+          prompt:"A student says 0.5 is the same as 5%.",
+          work:"Student idea: 0.5 = 5%",
+          options:[
+            "They forgot 0.5 means 50%. Five percent is 0.05.",
             "They added 50 instead of 5.",
-            "They turned 5% into 0.05 and got confused.",
-            "They mixed up numerator and denominator."
+            "They confused numerator/denominator.",
+            "They mixed up multiplication and division."
           ],
-          correctIndex: 0,
-          hint: "One-half of something is closer to 5% or 50%?",
-          insight: "0.5 is 1/2 = 50%. Five percent is 0.05 (much smaller)."
+          correctIndex:0,
+          hint:"One-half of something is close to 50%, not 5%.",
+          insight:"Misconception: “percent sign is just a label.” Principle: percent means ‘out of 100.’ 0.5 = 50%, while 5% = 0.05."
         },
 
-        // 3–5 — Logic & Patterns
+        // ---------------- 3–5 LOGIC ----------------
         {
-          id: "35-lo-1",
-          gradeBand: "3-5",
-          track: "logic",
-          difficulty: "medium",
-          errorType: "rule-application",
-          inattention: false,
-          prompt: "A student sees: 2 → 5, 3 → 7, 4 → 9, and says the rule is 'add 2'. What’s wrong?",
-          work: "Pairs:\n2→5\n3→7\n4→9\nStudent rule: add 2",
-          options: [
-            "The rule changes each time; it’s actually 'multiply by 2, then add 1'.",
-            "The rule is 'add 3' every time.",
-            "There is no rule.",
-            "The rule is 'subtract 1'."
+          id:"35-lo-1", gradeBand:"3-5", track:"logic", difficulty:"medium",
+          errorType:"odd-one-out", inattention:false,
+          prompt:"Which one does NOT belong: square, triangle, rectangle, circle?",
+          work:"Student thought: 'rectangle doesn't belong because it is long.'",
+          options:[
+            "Circle, because it has no straight sides (the others do).",
+            "Rectangle, because it is long.",
+            "Triangle, because it has 3 sides.",
+            "Square, because it has equal sides."
           ],
-          correctIndex: 0,
-          hint: "Try the same rule on every input. Does it work for all three?",
-          insight: "2×2+1=5, 3×2+1=7, 4×2+1=9. One rule should fit every pair."
+          correctIndex:0,
+          hint:"Look for a rule that separates one from all the others.",
+          insight:"Misconception: “choose based on appearance.” Principle: use a defining property. Circle is the only one without straight sides."
         },
 
-        // -------------------------
-        // 6–8 — Operations
-        // -------------------------
+        // ---------------- 6–8 OPERATIONS ----------------
         {
-          id: "68-op-1",
-          gradeBand: "6-8",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "fraction-addition",
-          inattention: false,
-          prompt: "A student adds fractions and gets 1/4 + 1/2 = 2/6.",
-          work: "Student work:\n1/4 + 1/2 = 2/6",
-          options: [
-            "They added numerators and denominators straight across instead of using a common denominator.",
-            "They multiplied the fractions instead of adding.",
+          id:"68-op-1", gradeBand:"6-8", track:"operations", difficulty:"medium",
+          errorType:"fraction-addition", inattention:false,
+          prompt:"A student adds fractions and gets 1/4 + 1/2 = 2/6.",
+          work:"Student work: 1/4 + 1/2 = 2/6",
+          options:[
+            "They added numerators and denominators straight across. Use a common denominator: 1/4 + 2/4 = 3/4.",
+            "They multiplied instead of adding.",
             "They subtracted one fraction from the other.",
-            "They tried to simplify 3/4 but used the wrong numbers."
+            "They simplified using the wrong numbers."
           ],
-          correctIndex: 0,
-          hint: "What common denominator works for 4 and 2?",
-          insight: "Use a common denominator: 1/4 + 1/2 = 1/4 + 2/4 = 3/4."
+          correctIndex:0,
+          hint:"Rewrite both fractions with the same denominator.",
+          insight:"Misconception: “add across.” Principle: fraction addition needs a common unit. Correct: 1/4 + 1/2 = 1/4 + 2/4 = 3/4."
         },
         {
-          id: "68-op-2",
-          gradeBand: "6-8",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "integer-sign",
-          inattention: true,
-          prompt: "A student computes −8 + 5 and writes −13.",
-          work: "Student work:\n−8 + 5 = −13",
-          options: [
-            "They added the numbers as if both were negative, instead of combining a negative and a positive.",
-            "They subtracted 5 from 8 but forgot the sign.",
-            "They multiplied −8 by 5 instead of adding.",
-            "They changed −8 into +8 by mistake."
+          id:"68-op-2", gradeBand:"6-8", track:"operations", difficulty:"medium",
+          errorType:"integer-sign", inattention:true,
+          prompt:"A student computes −8 + 5 and writes −13.",
+          work:"Student work: −8 + 5 = −13",
+          options:[
+            "They treated both numbers as negative. Correct: the negative is stronger by 3, so −8 + 5 = −3.",
+            "They subtracted 5 from 8 but lost the sign.",
+            "They multiplied −8 by 5.",
+            "They changed −8 into +8."
           ],
-          correctIndex: 0,
-          hint: "Which is bigger in absolute value: 8 or 5?",
-          insight: "The negative is stronger by 3, so −8 + 5 = −3."
+          correctIndex:0,
+          hint:"Which absolute value is bigger: 8 or 5?",
+          insight:"Misconception: “keep the minus and add.” Principle: compare absolute values. Correct: −8 + 5 = −3."
         },
         {
-          id: "68-op-3",
-          gradeBand: "6-8",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "distribution",
-          inattention: false,
-          prompt: "A student simplifies 5(2x + 1) and writes 10x + 1.",
-          work: "Student work:\n5(2x + 1) = 10x + 1",
-          options: [
-            "They multiplied the variable term but forgot to multiply the constant by 5.",
-            "They multiplied everything by 10 instead of 5.",
-            "They added 5 to 2x and left +1 alone.",
-            "They distributed 5 only to the 1."
+          id:"68-op-3", gradeBand:"6-8", track:"operations", difficulty:"medium",
+          errorType:"distribution", inattention:false,
+          prompt:"A student simplifies 3(x − 4) and writes 3x − 4.",
+          work:"Student work: 3(x − 4) = 3x − 4",
+          options:[
+            "They forgot to multiply 3 by −4. Correct: 3(x − 4) = 3x − 12.",
+            "They subtracted 4 from 3x incorrectly.",
+            "They added 4 to both sides.",
+            "They distributed the wrong number."
           ],
-          correctIndex: 0,
-          hint: "How many terms are inside the parentheses?",
-          insight: "Distribute to every term: 5(2x+1)=10x+5."
+          correctIndex:0,
+          hint:"Distribution must touch every term inside the parentheses.",
+          insight:"Misconception: “distribute only to x.” Principle: multiply each term. Correct: 3x − 12."
         },
 
-        // 6–8 — Reasoning
+        // ---------------- 6–8 REASONING ----------------
         {
-          id: "68-re-1",
-          gradeBand: "6-8",
-          track: "reasoning",
-          difficulty: "medium",
-          errorType: "square-negative",
-          inattention: false,
-          prompt: "A student says (−3)² = −9 because 'the answer stays negative'.",
-          work: "Student work:\n(−3)² = −9",
-          options: [
-            "They forgot that squaring means multiply by itself, and a negative times a negative is positive.",
-            "They multiplied 3 × 2 instead of squaring.",
-            "They changed the sign twice in the wrong places.",
-            "They squared only the negative sign."
+          id:"68-re-1", gradeBand:"6-8", track:"reasoning", difficulty:"medium",
+          errorType:"square-negative", inattention:false,
+          prompt:"A student says (−3)² = −9 because 'the answer stays negative'.",
+          work:"Student work: (−3)² = −9",
+          options:[
+            "They forgot squaring means multiply by itself: (−3)(−3)=+9.",
+            "They multiplied 3×2.",
+            "They squared only the negative sign.",
+            "They changed the sign twice."
           ],
-          correctIndex: 0,
-          hint: "Rewrite (−3)² as (−3)×(−3).",
-          insight: "(−3)×(−3)=+9, so (−3)² = 9."
+          correctIndex:0,
+          hint:"Write it as (−3) × (−3). What sign do you get?",
+          insight:"Misconception: “negative stays negative.” Principle: negative×negative=positive. Correct: (−3)²=9."
+        },
+        {
+          id:"68-re-2", gradeBand:"6-8", track:"reasoning", difficulty:"hard",
+          errorType:"proportion", inattention:false,
+          prompt:"In y = kx (a proportional relationship), a student says doubling x makes y stay the same.",
+          work:"Student statement: 'y doesn’t change when x doubles.'",
+          options:[
+            "They confused proportional relationships with horizontal lines. In y=kx, doubling x doubles y.",
+            "They confused 'double' with 'divide by 2'.",
+            "They think only the ratio matters, not values.",
+            "They mixed up x and y."
+          ],
+          correctIndex:0,
+          hint:"If y = kx and x becomes 2x, what happens to y?",
+          insight:"Misconception: “y is independent.” Principle: in y=kx, y scales with x. Correct: doubling x doubles y."
         },
 
-        // 6–8 — Logic & Patterns
+        // ---------------- 6–8 LOGIC ----------------
         {
-          id: "68-lo-1",
-          gradeBand: "6-8",
-          track: "logic",
-          difficulty: "medium",
-          errorType: "sequence-step",
-          inattention: false,
-          prompt: "A student says the sequence 3, 7, 15, 31 grows by +4, +8, +16 so the next is 47. What’s the better next term?",
-          work: "Sequence:\n3, 7, 15, 31, __\nStudent answer: 47",
-          options: [
-            "63 (because the differences double: +4, +8, +16, +32)",
-            "47 (because +16 repeats)",
-            "49 (because 7×7)",
-            "60 (because add 29)"
+          id:"68-lo-1", gradeBand:"6-8", track:"logic", difficulty:"medium",
+          errorType:"pattern-rule", inattention:false,
+          prompt:"Pattern: 3, 6, 12, 24, ___. What comes next?",
+          work:"Student guess: 'Maybe add 6 to get 30?'",
+          options:[
+            "48, because the pattern multiplies by 2 each time.",
+            "30, because you add 6.",
+            "36, because 12+24=36.",
+            "27, because 24 is close to 27."
           ],
-          correctIndex: 0,
-          hint: "Continue the pattern in the differences.",
-          insight: "Differences double: 31 + 32 = 63."
+          correctIndex:0,
+          hint:"Look at the ratio between terms: each is doubled.",
+          insight:"Misconception: “use addition when you see growing numbers.” Principle: check consistent rule. Correct: multiply by 2 → 48."
+        },
+        {
+          id:"68-lo-2", gradeBand:"6-8", track:"logic", difficulty:"hard",
+          errorType:"if-then", inattention:false,
+          prompt:"Logic: If ALL squares are rectangles, and shape A is a square, what must be true?",
+          work:"Student thought: 'A might be a rectangle, but not sure.'",
+          options:[
+            "A must be a rectangle, because every square is a rectangle.",
+            "A cannot be a rectangle, because rectangles are different.",
+            "A might be a triangle.",
+            "Nothing can be concluded."
+          ],
+          correctIndex:0,
+          hint:"All squares belong inside the category ‘rectangles.’",
+          insight:"Misconception: “categories don’t nest.” Principle: if A is in a subset, it’s also in the larger set. Square ⇒ Rectangle."
         },
 
-        // -------------------------
-        // Algebra I — Operations
-        // -------------------------
+        // ---------------- Algebra I OPERATIONS ----------------
         {
-          id: "alg1-op-1",
-          gradeBand: "Alg1",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "distribution",
-          inattention: false,
-          prompt: "A student expands 2(x + 3) as 2x + 3.",
-          work: "Student work:\n2(x + 3) = 2x + 3",
-          options: [
-            "They distributed 2 to x but forgot to multiply 3 by 2.",
-            "They added 2 to x and then added 3.",
-            "They subtracted 3 instead of adding.",
-            "They divided everything by 2 first."
+          id:"alg1-op-1", gradeBand:"Alg1", track:"operations", difficulty:"medium",
+          errorType:"distribution", inattention:false,
+          prompt:"A student expands 2(x + 3) as 2x + 3.",
+          work:"Student work: 2(x + 3) = 2x + 3",
+          options:[
+            "They distributed 2 to x but forgot 2·3. Correct: 2x + 6.",
+            "They subtracted 3.",
+            "They divided by 2.",
+            "They turned x into x²."
           ],
-          correctIndex: 0,
-          hint: "What should 2 multiply inside the parentheses?",
-          insight: "2(x+3)=2x+6."
+          correctIndex:0,
+          hint:"How many terms are inside the parentheses?",
+          insight:"Misconception: “multiply only the variable.” Principle: distribute to every term. Correct: 2x+6."
         },
 
-        // Algebra I — Reasoning
+        // ---------------- Geometry REASONING ----------------
         {
-          id: "alg1-re-1",
-          gradeBand: "Alg1",
-          track: "reasoning",
-          difficulty: "hard",
-          errorType: "equivalent-forms",
-          inattention: false,
-          prompt: "A student says y = 4x + 1 and 4x − y = −1 are different lines.",
-          work: "Student claim:\n“Different lines”",
-          options: [
-            "They didn’t recognize that rearranging an equation can give an equivalent form of the same line.",
-            "They thought subtracting y always changes slope.",
-            "They confused x-intercept with y-intercept.",
-            "They assumed any minus sign makes a new line."
-          ],
-          correctIndex: 0,
-          hint: "Solve 4x − y = −1 for y.",
-          insight: "Rearrange: 4x − y = −1 → −y = −4x − 1 → y = 4x + 1. Same line."
-        },
-
-        // Algebra I — Logic & Patterns
-        {
-          id: "alg1-lo-1",
-          gradeBand: "Alg1",
-          track: "logic",
-          difficulty: "medium",
-          errorType: "if-then",
-          inattention: false,
-          prompt: "A student says: “If a number is divisible by 4, then it must be even. So if it's even, it must be divisible by 4.” What’s wrong?",
-          work: "Student reasoning:\nDivisible by 4 → Even\nEven → Divisible by 4",
-          options: [
-            "They reversed the implication. Even numbers don’t have to be divisible by 4.",
-            "Divisible by 4 numbers are not even.",
-            "Even numbers are never divisible by 4.",
-            "The statement is correct."
-          ],
-          correctIndex: 0,
-          hint: "Find a counterexample: an even number not divisible by 4.",
-          insight: "Example: 6 is even but not divisible by 4. The reverse statement is false."
-        },
-
-        // -------------------------
-        // Geometry — Operations
-        // -------------------------
-        {
-          id: "geo-op-1",
-          gradeBand: "Geo",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "perimeter-area",
-          inattention: false,
-          prompt: "A student finds the perimeter of a rectangle with sides 3 and 5 by computing 3 × 5 = 15.",
-          work: "Student work:\nPerimeter = 15",
-          options: [
-            "They used the area formula (length × width) instead of adding all side lengths.",
-            "They added the sides in the wrong order.",
-            "They subtracted 3 from 5 instead.",
-            "They halved the side lengths first."
-          ],
-          correctIndex: 0,
-          hint: "Perimeter means walk around the shape.",
-          insight: "Perimeter is 3+5+3+5=16, not 15."
-        },
-
-        // Geometry — Reasoning
-        {
-          id: "geo-re-1",
-          gradeBand: "Geo",
-          track: "reasoning",
-          difficulty: "medium",
-          errorType: "triangle-angle-sum",
-          inattention: false,
-          prompt: "A student says the angles in a triangle add to 200° because “100 + 50 + 50 = 200”.",
-          work: "Student work:\nTriangle angle sum = 200°",
-          options: [
-            "They ignored the rule that triangle angles must sum to 180°.",
-            "They used quadrilateral rules.",
+          id:"geo-re-1", gradeBand:"Geo", track:"reasoning", difficulty:"medium",
+          errorType:"triangle-angle-sum", inattention:false,
+          prompt:"A student says triangle angles add to 200° because '100+50+50=200'.",
+          work:"Student work: angle sum = 200°",
+          options:[
+            "They ignored the rule that triangle angles must total 180°, so those angles can’t form a triangle.",
             "They mixed up degrees and radians.",
-            "They doubled one angle by mistake."
+            "They doubled an angle.",
+            "They used a quadrilateral rule."
           ],
-          correctIndex: 0,
-          hint: "What is the angle sum of any triangle?",
-          insight: "Even if 100+50+50=200, those angles cannot form a triangle because triangles must total 180°."
+          correctIndex:0,
+          hint:"What is the angle sum rule for any triangle?",
+          insight:"Misconception: “my addition decides the rule.” Principle: triangle sum is always 180°. Therefore 100°,50°,50° is impossible for a triangle."
         },
 
-        // Geometry — Logic & Patterns
+        // ---------------- Trigonometry REASONING ----------------
         {
-          id: "geo-lo-1",
-          gradeBand: "Geo",
-          track: "logic",
-          difficulty: "hard",
-          errorType: "proof-structure",
-          inattention: true,
-          prompt: "A student proof uses the conclusion as a reason in the middle of the proof. What’s the issue?",
-          work: "Student proof:\nStep 4 says 'Triangles are congruent' to justify Step 5,\nbut triangle congruence is what the proof is trying to prove.",
-          options: [
-            "They used circular reasoning (assuming the result they need to prove).",
-            "They forgot a diagram label.",
-            "They used the wrong theorem name only.",
-            "There is no issue."
-          ],
-          correctIndex: 0,
-          hint: "A proof can’t assume what it’s trying to show.",
-          insight: "That’s circular reasoning: the conclusion must come at the end, not be used as a reason in the middle."
-        },
-
-        // -------------------------
-        // Algebra II — Operations
-        // -------------------------
-        {
-          id: "alg2-op-1",
-          gradeBand: "Alg2",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "expansion",
-          inattention: false,
-          prompt: "A student expands (x + 2)² and writes x² + 4.",
-          work: "Student work:\n(x + 2)² = x² + 4",
-          options: [
-            "They forgot the middle term 2·x·2 = 4x.",
-            "They multiplied x by 2 then squared.",
-            "They added 2 to x² instead of squaring.",
-            "They confused (x+2)² with (x²+2)²."
-          ],
-          correctIndex: 0,
-          hint: "Use (a+b)² = a² + 2ab + b².",
-          insight: "(x+2)² = x² + 4x + 4."
-        },
-
-        // Algebra II — Reasoning
-        {
-          id: "alg2-re-1",
-          gradeBand: "Alg2",
-          track: "reasoning",
-          difficulty: "hard",
-          errorType: "factored-form",
-          inattention: false,
-          prompt: "A student simplifies (x − 3)(x + 3) and writes x² + 9.",
-          work: "Student work:\n(x − 3)(x + 3) = x² + 9",
-          options: [
-            "They missed the difference of squares pattern: (a−b)(a+b)=a²−b².",
-            "They added the binomials first, then squared.",
-            "They multiplied only the x terms.",
-            "They thought 3x and −3x add to 6x."
-          ],
-          correctIndex: 0,
-          hint: "What is (a−b)(a+b) equal to?",
-          insight: "(x−3)(x+3)=x²−9, not x²+9."
-        },
-
-        // Algebra II — Logic & Patterns
-        {
-          id: "alg2-lo-1",
-          gradeBand: "Alg2",
-          track: "logic",
-          difficulty: "hard",
-          errorType: "counterexample",
-          inattention: false,
-          prompt: "A student claims: “If x² = 9, then x = 3.” What’s missing?",
-          work: "Student work:\nx² = 9 → x = 3",
-          options: [
-            "They forgot the second solution: x can be −3 as well.",
-            "x cannot be 3.",
-            "9 has no square roots.",
-            "They should divide by 2."
-          ],
-          correctIndex: 0,
-          hint: "What numbers squared give 9?",
-          insight: "Both 3 and −3 square to 9, so x = ±3."
-        },
-
-        // -------------------------
-        // Trigonometry — Operations
-        // -------------------------
-        {
-          id: "trig-op-1",
-          gradeBand: "Trig",
-          track: "operations",
-          difficulty: "medium",
-          errorType: "sohcahtoa",
-          inattention: false,
-          prompt: "A student writes sin(θ) = adjacent/hypotenuse. What went wrong?",
-          work: "Student work:\nsin(θ) = adjacent / hypotenuse",
-          options: [
-            "They swapped sine and cosine. sin(θ)=opposite/hypotenuse.",
-            "They swapped sine and tangent. sin(θ)=opposite/adjacent.",
-            "They should use degrees, not a ratio.",
-            "Sine has no relation to triangles."
-          ],
-          correctIndex: 0,
-          hint: "SOH: Sine = Opposite over Hypotenuse.",
-          insight: "Sine uses opposite/hypotenuse; adjacent/hypotenuse is cosine."
-        },
-
-        // Trigonometry — Reasoning
-        {
-          id: "trig-re-1",
-          gradeBand: "Trig",
-          track: "reasoning",
-          difficulty: "hard",
-          errorType: "unit-circle-angle",
-          inattention: true,
-          prompt: "A student evaluates sin(π) and writes 1 because “π is 180°, the top of the circle.”",
-          work: "Student work:\nsin(π) = 1",
-          options: [
-            "They confused sin(π/2)=1 with sin(π)=0. At π the point is (−1,0).",
+          id:"trig-re-1", gradeBand:"Trig", track:"reasoning", difficulty:"hard",
+          errorType:"unit-circle", inattention:true,
+          prompt:"A student evaluates sin(π) and writes 1 because 'π is 180°, the top of the circle.'",
+          work:"Student work: sin(π) = 1",
+          options:[
+            "They confused π/2 with π. On the unit circle, π is at (−1, 0), so sin(π)=0.",
             "They used cosine instead of sine.",
-            "They mixed radians and degrees so nothing works.",
-            "They thought sine is always 1 at important angles."
+            "They think sine is always 1 at special angles.",
+            "They mixed radians and degrees completely."
           ],
-          correctIndex: 0,
-          hint: "On the unit circle, what are the coordinates at π?",
-          insight: "At π (180°), the point is (−1,0). Sine is the y-coordinate, so sin(π)=0."
-        },
-
-        // Trigonometry — Logic & Patterns
-        {
-          id: "trig-lo-1",
-          gradeBand: "Trig",
-          track: "logic",
-          difficulty: "medium",
-          errorType: "periodicity",
-          inattention: false,
-          prompt: "A student says sin(θ) = sin(θ + π). What’s the issue?",
-          work: "Student claim:\nsin(θ) = sin(θ + π)",
-          options: [
-            "Sine’s period is 2π, not π. sin(θ+2π)=sin(θ), but sin(θ+π)=−sin(θ).",
-            "Sine has period π.",
-            "Sine has no period.",
-            "The statement is always true."
-          ],
-          correctIndex: 0,
-          hint: "Try θ=π/2. Compare sin(π/2) and sin(π/2+π).",
-          insight: "sin(π/2)=1, sin(3π/2)=−1. So adding π flips the sign."
-        },
-
-        // -------------------------
-        // Pre-Calculus — Operations
-        // -------------------------
-        {
-          id: "precalc-op-1",
-          gradeBand: "PreCalc",
-          track: "operations",
-          difficulty: "hard",
-          errorType: "function-shift",
-          inattention: false,
-          prompt: "A student says f(x)= (x−3)² shifts the graph of x² left by 3.",
-          work: "Student claim:\n(x−3)² shifts left 3",
-          options: [
-            "They reversed the horizontal shift. (x−3) shifts right 3.",
-            "It shifts up 3.",
-            "It shifts down 3.",
-            "It reflects across the y-axis."
-          ],
-          correctIndex: 0,
-          hint: "Inside the parentheses, the shift is opposite the sign.",
-          insight: "(x−3)² moves the parabola right 3."
-        },
-
-        // Pre-Calculus — Reasoning
-        {
-          id: "precalc-re-1",
-          gradeBand: "PreCalc",
-          track: "reasoning",
-          difficulty: "hard",
-          errorType: "domain-misread",
-          inattention: true,
-          prompt: "A student says the domain of √(x−5) is all real numbers.",
-          work: "Student statement:\nDomain is all real numbers",
-          options: [
-            "They forgot the radicand must be ≥ 0, so x−5 ≥ 0 → x ≥ 5.",
-            "They confused domain with range.",
-            "Square roots only accept negative inputs.",
-            "Domains are never restricted."
-          ],
-          correctIndex: 0,
-          hint: "What must be true inside the square root?",
-          insight: "Require x−5 ≥ 0, so x ≥ 5."
-        },
-
-        // Pre-Calculus — Logic & Patterns
-        {
-          id: "precalc-lo-1",
-          gradeBand: "PreCalc",
-          track: "logic",
-          difficulty: "medium",
-          errorType: "quantifiers",
-          inattention: false,
-          prompt: "A student says: “Because f(2)=0, the function must have a root at every x.” What’s the flaw?",
-          work: "Student reasoning:\nOne example → always true",
-          options: [
-            "They overgeneralized from one example. One root doesn’t mean every x is a root.",
-            "If f(2)=0 then f is undefined.",
-            "Roots only exist for linear functions.",
-            "The statement is correct."
-          ],
-          correctIndex: 0,
-          hint: "Does one case prove all cases?",
-          insight: "A single example shows existence, not “for all.”"
-        },
-
-        // -------------------------
-        // Calculus — Operations
-        // -------------------------
-        {
-          id: "calc-op-1",
-          gradeBand: "Calc",
-          track: "operations",
-          difficulty: "hard",
-          errorType: "derivative-rule",
-          inattention: false,
-          prompt: "A student says the derivative of f(x)=x² is f′(x)=2x².",
-          work: "Student work:\nd/dx (x²) = 2x²",
-          options: [
-            "They multiplied by the exponent but forgot to reduce the power by 1.",
-            "They differentiated twice.",
-            "They integrated instead of differentiating.",
-            "They changed x² into 2x before differentiating."
-          ],
-          correctIndex: 0,
-          hint: "Power rule: d/dx(xⁿ)=n·x^(n−1).",
-          insight: "Correct derivative: 2x^(2−1)=2x."
-        },
-
-        // Calculus — Reasoning
-        {
-          id: "calc-re-1",
-          gradeBand: "Calc",
-          track: "reasoning",
-          difficulty: "hard",
-          errorType: "slope-meaning",
-          inattention: true,
-          prompt: "A student says f′(a) is the y-value of the function at x=a.",
-          work: "Student statement:\nf′(a) = f(a)",
-          options: [
-            "They confused derivative with function value. f′(a) is slope of the tangent at x=a.",
-            "They confused slope with area.",
-            "They confused intercept with slope only.",
-            "They are correct."
-          ],
-          correctIndex: 0,
-          hint: "Derivative answers “how fast is it changing?”",
-          insight: "f(a) is the height; f′(a) is the instantaneous rate of change (slope)."
-        },
-
-        // Calculus — Logic & Patterns
-        {
-          id: "calc-lo-1",
-          gradeBand: "Calc",
-          track: "logic",
-          difficulty: "medium",
-          errorType: "limit-language",
-          inattention: false,
-          prompt: "A student says: “If lim(x→a) f(x) exists, then f(a) must be defined.” What’s wrong?",
-          work: "Student claim:\nLimit exists → f(a) defined",
-          options: [
-            "A limit can exist even if f(a) is undefined or different (a removable discontinuity).",
-            "If a limit exists, the function must be a polynomial.",
-            "Limits only exist when f(a)=0.",
-            "The statement is always true."
-          ],
-          correctIndex: 0,
-          hint: "Think about a “hole” in the graph at x=a.",
-          insight: "A limit describes nearby behavior. f(a) may be undefined or set to a different value."
+          correctIndex:0,
+          hint:"At π (180°), what is the y-coordinate on the unit circle?",
+          insight:"Misconception: “π is the top.” Principle: sin is the y-coordinate. At π, point is (−1,0) so sin(π)=0."
         }
       ];
 
-      // ----- State -----
-      function makeEmptyState() {
+      // -----------------------------
+      // State & storage (with migration)
+      // -----------------------------
+      function makeEmptyState(){
         return {
-          xp: 0,
-          coins: 0,
-          streak: 0,
-          played: 0,
-          gradeBand: "6-8",       // ✅ default start at 6–8
-          track: "operations",
-          missed: [],
-          errorWeakness: {}
+          xp:0, coins:0, streak:0, played:0,
+          gradeBand:"6-8",        // ✅ default start at 6–8
+          track:"operations",     // default track
+          missed:[],
+          errorWeakness:{}
         };
       }
 
-      function isInattentionItem(item) {
-        return !!(item && item.inattention);
-      }
+      var STORAGE_KEYS = ["bethemath_players_v1","mathquest_players_v1"]; // try new, then old
+      var SAVE_KEY = STORAGE_KEYS[0];
 
+      function isInattentionItem(item){ return !!(item && item.inattention); }
       var state = makeEmptyState();
-
-      // ✅ New storage key so the app starts clean at 6–8 (no old saved grade band overriding)
-      var STORAGE_KEY = "bethemath_players_v1";
-
       var players = {};
       var activePlayerId = null;
       var lastItemId = null;
 
-      function $(id) { return document.getElementById(id); }
+      function $(id){ return document.getElementById(id); }
 
       var els = {
-        grade: $("mq-grade"),
-        track: $("mq-track"),
-        question: $("mq-question"),
-        work: $("mq-work"),
-        options: $("mq-options"),
-        feedback: $("mq-feedback"),
-        queueNote: $("mq-queue-note"),
-        xp: $("mq-xp"),
-        coins: $("mq-coins"),
-        streak: $("mq-streak"),
-        played: $("mq-played"),
-        badges: $("mq-badges"),
-        autosave: $("mq-autosave"),
-        highContrast: $("mq-high-contrast"),
-        dyslexic: $("mq-dyslexic"),
-        reset: $("mq-reset"),
-        insightLog: $("mq-insight-log"),
-        scoreboard: $("mq-scoreboard")
+        grade:$("mq-grade"),
+        track:$("mq-track"),
+        question:$("mq-question"),
+        work:$("mq-work"),
+        options:$("mq-options"),
+        feedback:$("mq-feedback"),
+        queueNote:$("mq-queue-note"),
+        xp:$("mq-xp"),
+        coins:$("mq-coins"),
+        streak:$("mq-streak"),
+        played:$("mq-played"),
+        badges:$("mq-badges"),
+        autosave:$("mq-autosave"),
+        highContrast:$("mq-high-contrast"),
+        dyslexic:$("mq-dyslexic"),
+        reset:$("mq-reset"),
+        insightLog:$("mq-insight-log"),
+        scoreboard:$("mq-scoreboard"),
+        miniXP:$("mq-mini-xp"),
+        miniStreak:$("mq-mini-streak"),
+        miniFocus:$("mq-mini-focus"),
+        miniType:$("mq-mini-type")
       };
 
       var scaleSlider = $("mq-scale");
       var delaySlider = $("mq-delay");
       var sfxButton = $("mq-sfx-toggle");
       var nextButton = $("mq-next");
+
       var sfxOn = true;
       var audioCtx = null;
       var nextTimer = null;
       var autoAdvanceDelayMs = 5000;
 
-      function loadPlayers() {
+      function loadFromKey(key){
+        try{
+          var raw = localStorage.getItem(key);
+          if(!raw) return null;
+          var parsed = JSON.parse(raw);
+          if(parsed && typeof parsed === "object" && parsed.players) return parsed;
+          return null;
+        }catch(e){ return null; }
+      }
+
+      function loadPlayers(){
         players = {};
         activePlayerId = null;
 
-        try {
-          var raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) {
-            var parsed = JSON.parse(raw);
-            if (parsed && typeof parsed === "object" && parsed.players) {
-              players = parsed.players;
-              activePlayerId = parsed.activeId || null;
-            }
-          }
-        } catch (e) {
-          players = {};
-          activePlayerId = null;
+        var parsed = null;
+        for(var i=0;i<STORAGE_KEYS.length;i++){
+          parsed = loadFromKey(STORAGE_KEYS[i]);
+          if(parsed){ break; }
         }
 
-        if (!players || Object.keys(players).length === 0) {
+        if(parsed){
+          players = parsed.players || {};
+          activePlayerId = parsed.activeId || null;
+        }
+
+        if(!players || Object.keys(players).length === 0){
           var id = "p1";
           players = {};
-          players[id] = { name: "Player 1", state: makeEmptyState() };
+          players[id] = { name:"Player 1", state: makeEmptyState() };
           activePlayerId = id;
         }
 
         var active = players[activePlayerId];
-        if (active && active.state) {
+        if(active && active.state){
           state = Object.assign(makeEmptyState(), active.state);
-          if (!state.errorWeakness) state.errorWeakness = {};
-        } else {
+          if(!state.errorWeakness) state.errorWeakness = {};
+        }else{
           state = makeEmptyState();
         }
       }
 
-      function savePlayers() {
-        if (!activePlayerId || !players[activePlayerId]) return;
+      function savePlayers(){
+        if(!activePlayerId || !players[activePlayerId]) return;
         players[activePlayerId].state = state;
 
-        try {
+        try{
           localStorage.setItem(
-            STORAGE_KEY,
+            SAVE_KEY,
             JSON.stringify({ activeId: activePlayerId, players: players })
           );
-          if (els.autosave && players[activePlayerId]) {
-            els.autosave.textContent = "Progress saved for " + players[activePlayerId].name + ".";
+          if(els.autosave && players[activePlayerId]){
+            els.autosave.textContent = "Saved for " + (players[activePlayerId].name || "player") + ".";
           }
-        } catch (e) {
-          if (els.autosave) els.autosave.textContent = "Autosave skipped (storage unavailable).";
+        }catch(e){
+          if(els.autosave) els.autosave.textContent = "Autosave skipped (storage unavailable).";
         }
       }
 
-      function refreshPlayerSelect() {
+      function refreshPlayerSelect(){
         var select = $("mq-player");
-        if (!select) return;
+        if(!select) return;
         select.innerHTML = "";
 
-        Object.keys(players).forEach(function (id) {
+        Object.keys(players).forEach(function(id){
           var opt = document.createElement("option");
           opt.value = id;
           opt.textContent = players[id].name || id;
-          if (id === activePlayerId) opt.selected = true;
+          if(id === activePlayerId) opt.selected = true;
           select.appendChild(opt);
         });
       }
 
-      function syncSelectorsFromState() {
-        if (els.grade) els.grade.value = state.gradeBand;
-        if (els.track) els.track.value = state.track;
+      function syncSelectorsFromState(){
+        if(els.grade) els.grade.value = state.gradeBand;
+        if(els.track) els.track.value = state.track;
+        updateMiniHeader();
       }
 
-      function updateScoreboard() {
-        if (!els.scoreboard) return;
+      function updateMiniHeader(){
+        if(els.miniXP) els.miniXP.textContent = state.xp || 0;
+        if(els.miniStreak) els.miniStreak.textContent = state.streak || 0;
+        if(els.miniFocus){
+          var gb = (state.gradeBand || "6-8").replace("Alg1","Algebra I").replace("Alg2","Algebra II")
+            .replace("Geo","Geometry").replace("Trig","Trigonometry").replace("PreCalc","Pre-Calculus").replace("Calc","Calculus");
+          var tr = state.track === "logic" ? "Logic & Patterns" : (state.track === "reasoning" ? "Reasoning" : "Operations");
+          els.miniFocus.textContent = gb + " • " + tr;
+        }
+        if(els.miniType){
+          els.miniType.textContent = "Focus: common errors & clean fixes";
+        }
+      }
+
+      function updateScoreboard(){
+        if(!els.scoreboard) return;
 
         var ids = Object.keys(players);
-        if (ids.length === 0) {
+        if(ids.length === 0){
           els.scoreboard.textContent = "No players yet.";
           return;
         }
 
-        var summary = ids.map(function (id) {
+        var summary = ids.map(function(id){
           var p = players[id];
           var st = p.state || makeEmptyState();
           return { name: p.name || id, xp: st.xp || 0, coins: st.coins || 0 };
         });
 
-        summary.sort(function (a, b) {
-          if (b.xp !== a.xp) return b.xp - a.xp;
-          if (b.coins !== a.coins) return b.coins - a.coins;
+        summary.sort(function(a,b){
+          if(b.xp !== a.xp) return b.xp - a.xp;
+          if(b.coins !== a.coins) return b.coins - a.coins;
           return a.name.localeCompare(b.name);
         });
 
-        var html = "<ol style='padding-left: 18px; margin: 0;'>";
-        summary.forEach(function (p) {
+        var html = "<ol style='padding-left:18px;margin:0;'>";
+        summary.forEach(function(p){
           html += "<li>" + p.name + " — XP " + p.xp + ", Coins " + p.coins + "</li>";
         });
         html += "</ol>";
-
         els.scoreboard.innerHTML = html;
       }
 
-      function updateStats() {
-        if (els.xp) els.xp.textContent = state.xp;
-        if (els.coins) els.coins.textContent = state.coins;
-        if (els.streak) els.streak.textContent = state.streak;
-        if (els.played) els.played.textContent = state.played;
+      function updateStats(){
+        if(els.xp) els.xp.textContent = state.xp;
+        if(els.coins) els.coins.textContent = state.coins;
+        if(els.streak) els.streak.textContent = state.streak;
+        if(els.played) els.played.textContent = state.played;
+        updateMiniHeader();
         savePlayers();
         updateScoreboard();
       }
 
-      function updateBadges() {
-        if (!els.badges) return;
+      function updateBadges(){
+        if(!els.badges) return;
         els.badges.innerHTML = "";
         var list = [];
+        if(state.played >= 1) list.push("First Fix");
+        if(state.streak >= 3) list.push("Streak 3+");
+        if(state.streak >= 5) list.push("Streak 5+");
+        if(state.xp >= 25) list.push("25+ XP");
+        if(state.xp >= 60) list.push("60+ XP");
+        if(state.missed && state.missed.length >= 3) list.push("Fix-It Queue");
 
-        if (state.played >= 1) list.push("First Fix");
-        if (state.streak >= 3) list.push("Streak 3+");
-        if (state.streak >= 5) list.push("Streak 5+");
-        if (state.xp >= 20) list.push("20+ XP");
-        if (state.xp >= 50) list.push("50+ XP");
-        if (state.missed && state.missed.length >= 3) list.push("Fix-It Queue");
-
-        list.forEach(function (label) {
+        list.forEach(function(label){
           var chip = document.createElement("div");
           chip.className = "mq-badge-chip mq-badge-earned";
           chip.textContent = "★ " + label;
@@ -1456,117 +959,111 @@
         });
       }
 
-      function getPool() {
-        return ITEMS.filter(function (item) {
+      function getPool(){
+        return ITEMS.filter(function(item){
           return item.gradeBand === state.gradeBand && item.track === state.track;
         });
       }
 
-      function getTopWeakErrorTypes() {
+      function getTopWeakErrorTypes(){
         var map = state.errorWeakness || {};
         var types = Object.keys(map);
-        if (types.length === 0) return [];
-        var entries = types.map(function (t) { return { type: t, score: map[t] }; });
-        entries.sort(function (a, b) { return b.score - a.score; });
-        var filtered = entries.filter(function (e) { return e.score >= 2; });
-        if (filtered.length === 0) return [];
-        return filtered.map(function (e) { return e.type; });
+        if(types.length === 0) return [];
+        var entries = types.map(function(t){ return { type:t, score: map[t] }; });
+        entries.sort(function(a,b){ return b.score - a.score; });
+        var filtered = entries.filter(function(e){ return e.score >= 2; });
+        if(filtered.length === 0) return [];
+        return filtered.map(function(e){ return e.type; });
       }
 
-      function pickDifficultyFromPool(pool) {
-        if (!pool || pool.length === 0) return null;
+      function pickDifficultyFromPool(pool){
+        if(!pool || pool.length === 0) return null;
 
-        var present = { easy: false, medium: false, hard: false };
-        pool.forEach(function (item) {
-          if (item.difficulty && present.hasOwnProperty(item.difficulty)) present[item.difficulty] = true;
+        var present = { easy:false, medium:false, hard:false };
+        pool.forEach(function(item){
+          if(item.difficulty && present.hasOwnProperty(item.difficulty)) present[item.difficulty] = true;
         });
 
         var streak = state.streak || 0;
-        var weights = { easy: 0, medium: 0, hard: 0 };
+        var weights = { easy:0, medium:0, hard:0 };
 
-        if (streak <= 1) {
-          weights.easy = 0.7; weights.medium = 0.25; weights.hard = 0.05;
-        } else if (streak <= 4) {
-          weights.easy = 0.4; weights.medium = 0.4; weights.hard = 0.2;
-        } else {
-          weights.easy = 0.2; weights.medium = 0.4; weights.hard = 0.4;
-        }
+        if(streak <= 1){ weights.easy=.7; weights.medium=.25; weights.hard=.05; }
+        else if(streak <= 4){ weights.easy=.4; weights.medium=.4; weights.hard=.2; }
+        else { weights.easy=.2; weights.medium=.4; weights.hard=.4; }
 
         var available = [];
-        ["easy", "medium", "hard"].forEach(function (d) {
-          if (present[d] && weights[d] > 0) available.push({ difficulty: d, weight: weights[d] });
+        ["easy","medium","hard"].forEach(function(d){
+          if(present[d] && weights[d] > 0) available.push({ difficulty:d, weight:weights[d] });
         });
 
-        if (available.length === 0) {
+        if(available.length === 0){
           var fallback = [];
-          pool.forEach(function (item) {
-            if (item.difficulty && present.hasOwnProperty(item.difficulty)) {
-              if (fallback.indexOf(item.difficulty) === -1) fallback.push(item.difficulty);
+          pool.forEach(function(item){
+            if(item.difficulty && present.hasOwnProperty(item.difficulty) && fallback.indexOf(item.difficulty) === -1){
+              fallback.push(item.difficulty);
             }
           });
-          if (fallback.length === 0) return null;
-          return fallback[Math.floor(Math.random() * fallback.length)];
+          if(fallback.length === 0) return null;
+          return fallback[Math.floor(Math.random()*fallback.length)];
         }
 
-        var total = available.reduce(function (sum, d) { return sum + d.weight; }, 0);
-        var r = Math.random() * total;
+        var total = available.reduce(function(sum,d){ return sum + d.weight; }, 0);
+        var r = Math.random()*total;
         var acc = 0;
-        for (var i = 0; i < available.length; i++) {
+        for(var i=0;i<available.length;i++){
           acc += available[i].weight;
-          if (r <= acc) return available[i].difficulty;
+          if(r <= acc) return available[i].difficulty;
         }
         return available[available.length - 1].difficulty;
       }
 
-      function chooseAdaptiveFromPool(pool) {
-        if (!pool || pool.length === 0) return null;
+      function chooseAdaptiveFromPool(pool){
+        if(!pool || pool.length === 0) return null;
 
         var difficulty = pickDifficultyFromPool(pool);
         var candidates = pool;
 
-        if (difficulty) {
-          var filtered = pool.filter(function (item) { return item.difficulty === difficulty; });
-          if (filtered.length > 0) candidates = filtered;
+        if(difficulty){
+          var filtered = pool.filter(function(item){ return item.difficulty === difficulty; });
+          if(filtered.length > 0) candidates = filtered;
         }
 
         var weakTypes = getTopWeakErrorTypes();
-        if (weakTypes.length > 0 && Math.random() < 0.5) {
+        if(weakTypes.length > 0 && Math.random() < 0.5){
           var focusType = weakTypes[0];
-          var typeFiltered = candidates.filter(function (item) { return item.errorType === focusType; });
-          if (typeFiltered.length > 0) candidates = typeFiltered;
+          var typeFiltered = candidates.filter(function(item){ return item.errorType === focusType; });
+          if(typeFiltered.length > 0) candidates = typeFiltered;
         }
 
-        if (candidates.length > 1 && lastItemId) {
-          var diffCandidates = candidates.filter(function (item) { return item.id !== lastItemId; });
-          if (diffCandidates.length > 0) candidates = diffCandidates;
+        if(candidates.length > 1 && lastItemId){
+          var diffCandidates = candidates.filter(function(item){ return item.id !== lastItemId; });
+          if(diffCandidates.length > 0) candidates = diffCandidates;
         }
 
-        var idx = Math.floor(Math.random() * candidates.length);
-        return candidates[idx];
+        return candidates[Math.floor(Math.random()*candidates.length)];
       }
 
-      function getNextItem() {
+      function getNextItem(){
         var fromMissed = false;
         var item = null;
 
-        if (state.missed && state.missed.length > 0 && Math.random() < 0.4) {
-          var idx = Math.floor(Math.random() * state.missed.length);
+        if(state.missed && state.missed.length > 0 && Math.random() < 0.4){
+          var idx = Math.floor(Math.random()*state.missed.length);
           item = state.missed[idx];
           fromMissed = true;
           state.missed.splice(idx, 1);
-        } else {
+        }else{
           var pool = getPool();
-          if (pool.length === 0) return { item: null, fromMissed: false };
-          item = chooseAdaptiveFromPool(pool) || pool[Math.floor(Math.random() * pool.length)];
+          if(pool.length === 0) return { item:null, fromMissed:false };
+          item = chooseAdaptiveFromPool(pool) || pool[Math.floor(Math.random()*pool.length)];
         }
-
-        return { item: item, fromMissed: fromMissed };
+        return { item:item, fromMissed:fromMissed };
       }
 
       var currentItem = null;
 
-      function appendInsightLog(item, correct) {
-        if (!els.insightLog || !item) return;
+      function appendInsightLog(item, correct){
+        if(!els.insightLog || !item) return;
         var div = document.createElement("div");
         div.style.marginBottom = "6px";
         var label = correct ? "✔️ Insight" : "🔁 Fix-It insight";
@@ -1574,89 +1071,87 @@
         els.insightLog.prepend(div);
       }
 
-      function renderItem(next) {
+      function renderItem(next){
         currentItem = next.item;
 
-        if (nextTimer) { clearTimeout(nextTimer); nextTimer = null; }
-        if (nextButton) nextButton.disabled = false;
+        if(nextTimer){ clearTimeout(nextTimer); nextTimer = null; }
+        if(nextButton) nextButton.disabled = false;
 
-        if (!currentItem) {
-          if (els.question) els.question.textContent = "No items for this grade band and track yet.";
-          if (els.work) els.work.textContent = "";
-          if (els.options) els.options.innerHTML = "";
-          if (els.feedback) {
+        if(!currentItem){
+          if(els.question) els.question.textContent = "No items for this grade band + track yet.";
+          if(els.work) els.work.textContent = "";
+          if(els.options) els.options.innerHTML = "";
+          if(els.feedback){
             els.feedback.textContent = "Try another grade band or track.";
             els.feedback.className = "mq-feedback";
           }
-          if (els.queueNote) els.queueNote.textContent = "";
+          if(els.queueNote) els.queueNote.textContent = "";
           return;
         }
 
         lastItemId = currentItem.id;
 
-        if (els.question) els.question.textContent = currentItem.prompt;
-        if (els.work) els.work.textContent = currentItem.work || "";
-        if (els.feedback) {
+        if(els.question) els.question.textContent = currentItem.prompt;
+        if(els.work) els.work.textContent = currentItem.work || "";
+        if(els.feedback){
           els.feedback.textContent = "Pick the best explanation or fix for this student's work.";
           els.feedback.className = "mq-feedback";
         }
 
-        if (els.queueNote) {
-          var inattentionLabel = "";
-          if (isInattentionItem(currentItem)) inattentionLabel = " <span style='color:#facc15;'>⚠ Inattention focus</span>";
-
-          if (next.fromMissed) {
+        if(els.queueNote){
+          var inattentionLabel = isInattentionItem(currentItem)
+            ? " <span style='color:var(--mq-warn);'>⚠ Inattention focus</span>"
+            : "";
+          if(next.fromMissed){
             els.queueNote.innerHTML = "🔁 <strong>Fix-It Queue:</strong> back for another try." + inattentionLabel;
-          } else {
-            els.queueNote.innerHTML = "✨ New error from this grade band and track." + inattentionLabel;
+          }else{
+            els.queueNote.innerHTML = "✨ New item from this grade band + track." + inattentionLabel;
           }
         }
 
-        if (!els.options) return;
+        if(!els.options) return;
         els.options.innerHTML = "";
 
-        currentItem.options.forEach(function (optText, index) {
+        currentItem.options.forEach(function(optText, index){
           var btn = document.createElement("button");
           btn.type = "button";
           btn.className = "mq-option-btn";
           btn.textContent = optText;
-          btn.addEventListener("click", function () { handleAnswer(index); });
+          btn.addEventListener("click", function(){ handleAnswer(index); });
           els.options.appendChild(btn);
         });
       }
 
-      function playBeep(correct) {
-        if (!sfxOn) return;
-        try {
-          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          var oscillator = audioCtx.createOscillator();
+      function playBeep(correct){
+        if(!sfxOn) return;
+        try{
+          if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          var osc = audioCtx.createOscillator();
           var gain = audioCtx.createGain();
-          oscillator.connect(gain);
-          gain.connect(audioCtx.destination);
+          osc.connect(gain); gain.connect(audioCtx.destination);
 
-          oscillator.type = "square";
-          oscillator.frequency.value = correct ? 1200 : 400;
+          osc.type = "square";
+          osc.frequency.value = correct ? 1200 : 400;
 
           var now = audioCtx.currentTime;
           gain.gain.setValueAtTime(0.0001, now);
           gain.gain.exponentialRampToValueAtTime(0.45, now + 0.02);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.30);
 
-          oscillator.start(now);
-          oscillator.stop(now + 0.32);
-        } catch (e) {}
+          osc.start(now);
+          osc.stop(now + 0.32);
+        }catch(e){}
       }
 
-      function scheduleNextItem() {
-        if (nextTimer) { clearTimeout(nextTimer); nextTimer = null; }
-        nextTimer = setTimeout(function () {
-          var next = getNextItem();
-          renderItem(next);
+      function scheduleNextItem(){
+        if(nextTimer){ clearTimeout(nextTimer); nextTimer = null; }
+        nextTimer = setTimeout(function(){
+          renderItem(getNextItem());
         }, autoAdvanceDelayMs);
       }
 
-      function handleAnswer(selectedIndex) {
-        if (!currentItem) return;
+      function handleAnswer(selectedIndex){
+        if(!currentItem) return;
 
         var buttons = els.options
           ? Array.prototype.slice.call(els.options.querySelectorAll(".mq-option-btn"))
@@ -1664,35 +1159,35 @@
 
         var correct = selectedIndex === currentItem.correctIndex;
 
-        buttons.forEach(function (btn, index) {
+        buttons.forEach(function(btn, index){
           btn.disabled = true;
-          btn.classList.remove("mq-correct", "mq-incorrect");
-          if (index === currentItem.correctIndex) btn.classList.add("mq-correct");
-          if (!correct && index === selectedIndex) btn.classList.add("mq-incorrect");
+          btn.classList.remove("mq-correct","mq-incorrect");
+          if(index === currentItem.correctIndex) btn.classList.add("mq-correct");
+          if(!correct && index === selectedIndex) btn.classList.add("mq-incorrect");
         });
 
         playBeep(correct);
         state.played += 1;
 
-        if (!state.errorWeakness) state.errorWeakness = {};
-        if (!correct && currentItem.errorType) {
-          if (!state.errorWeakness[currentItem.errorType]) state.errorWeakness[currentItem.errorType] = 0;
+        if(!state.errorWeakness) state.errorWeakness = {};
+        if(!correct && currentItem.errorType){
+          if(!state.errorWeakness[currentItem.errorType]) state.errorWeakness[currentItem.errorType] = 0;
           state.errorWeakness[currentItem.errorType] += 1;
         }
 
-        if (correct) {
+        if(correct){
           state.xp += 5;
           state.coins += 1;
           state.streak += 1;
-          if (els.feedback) {
+          if(els.feedback){
             els.feedback.textContent = "Nice fix! " + currentItem.insight;
             els.feedback.className = "mq-feedback mq-feedback-correct";
           }
           appendInsightLog(currentItem, true);
-        } else {
+        }else{
           state.streak = 0;
           state.missed.push(currentItem);
-          if (els.feedback) {
+          if(els.feedback){
             els.feedback.textContent = "Good attempt. Hint: " + currentItem.hint;
             els.feedback.className = "mq-feedback mq-feedback-encouraging";
           }
@@ -1704,81 +1199,80 @@
         scheduleNextItem();
       }
 
-      function applyVisualToggles() {
+      function applyVisualToggles(){
         var body = document.body;
-        if (els.highContrast) {
-          if (els.highContrast.checked) body.classList.add("mq-high-contrast");
+        if(els.highContrast){
+          if(els.highContrast.checked) body.classList.add("mq-high-contrast");
           else body.classList.remove("mq-high-contrast");
         }
-        if (els.dyslexic) {
-          if (els.dyslexic.checked) body.classList.add("mq-dyslexic");
+        if(els.dyslexic){
+          if(els.dyslexic.checked) body.classList.add("mq-dyslexic");
           else body.classList.remove("mq-dyslexic");
         }
       }
 
-      if (els.grade) {
-        els.grade.addEventListener("change", function (e) {
+      if(els.grade){
+        els.grade.addEventListener("change", function(e){
           state.gradeBand = e.target.value;
           updateStats();
           renderItem(getNextItem());
         });
       }
 
-      if (els.track) {
-        els.track.addEventListener("change", function (e) {
+      if(els.track){
+        els.track.addEventListener("change", function(e){
           state.track = e.target.value;
           updateStats();
           renderItem(getNextItem());
         });
       }
 
-      if (els.highContrast) els.highContrast.addEventListener("change", applyVisualToggles);
-      if (els.dyslexic) els.dyslexic.addEventListener("change", applyVisualToggles);
+      if(els.highContrast) els.highContrast.addEventListener("change", applyVisualToggles);
+      if(els.dyslexic) els.dyslexic.addEventListener("change", applyVisualToggles);
 
-      if (els.reset) {
-        els.reset.addEventListener("click", function () {
-          if (!confirm("Reset XP, coins, streak, and Fix-It Queue for this player?")) return;
+      if(els.reset){
+        els.reset.addEventListener("click", function(){
+          if(!confirm("Reset XP, coins, streak, and Fix-It Queue for this player?")) return;
           state = makeEmptyState();
           state.gradeBand = els.grade ? els.grade.value : "6-8";
           state.track = els.track ? els.track.value : "operations";
-          if (els.insightLog) els.insightLog.innerHTML = "";
+          if(els.insightLog) els.insightLog.innerHTML = "";
           updateStats();
           updateBadges();
           renderItem(getNextItem());
         });
       }
 
-      if (scaleSlider) {
-        var initialScale = scaleSlider.value ? parseInt(scaleSlider.value, 10) / 100 : 1;
+      if(scaleSlider){
+        var initialScale = scaleSlider.value ? (parseInt(scaleSlider.value,10)/100) : 1;
         document.documentElement.style.setProperty("--mq-scale", initialScale);
-
-        scaleSlider.addEventListener("input", function (e) {
-          var value = parseInt(e.target.value, 10) || 100;
-          document.documentElement.style.setProperty("--mq-scale", value / 100);
+        scaleSlider.addEventListener("input", function(e){
+          var value = parseInt(e.target.value,10) || 100;
+          document.documentElement.style.setProperty("--mq-scale", value/100);
         });
       }
 
-      if (delaySlider) {
-        autoAdvanceDelayMs = (parseInt(delaySlider.value, 10) || 5) * 1000;
-        delaySlider.addEventListener("input", function (e) {
-          var secs = parseInt(e.target.value, 10) || 5;
+      if(delaySlider){
+        autoAdvanceDelayMs = (parseInt(delaySlider.value,10) || 5) * 1000;
+        delaySlider.addEventListener("input", function(e){
+          var secs = parseInt(e.target.value,10) || 5;
           autoAdvanceDelayMs = secs * 1000;
         });
       }
 
-      if (sfxButton) {
+      if(sfxButton){
         sfxButton.classList.add("mq-sfx-on");
-        sfxButton.addEventListener("click", function () {
+        sfxButton.addEventListener("click", function(){
           sfxOn = !sfxOn;
           sfxButton.textContent = sfxOn ? "SFX: ON" : "SFX: OFF";
-          if (sfxOn) sfxButton.classList.add("mq-sfx-on");
+          if(sfxOn) sfxButton.classList.add("mq-sfx-on");
           else sfxButton.classList.remove("mq-sfx-on");
         });
       }
 
-      if (nextButton) {
-        nextButton.addEventListener("click", function () {
-          if (nextTimer) { clearTimeout(nextTimer); nextTimer = null; }
+      if(nextButton){
+        nextButton.addEventListener("click", function(){
+          if(nextTimer){ clearTimeout(nextTimer); nextTimer=null; }
           renderItem(getNextItem());
         });
       }
@@ -1787,15 +1281,15 @@
       var playerAddBtn = $("mq-player-add");
       var playerDeleteBtn = $("mq-player-delete");
 
-      if (playerSelect) {
-        playerSelect.addEventListener("change", function (e) {
+      if(playerSelect){
+        playerSelect.addEventListener("change", function(e){
           var newId = e.target.value;
-          if (!players[newId]) return;
+          if(!players[newId]) return;
           savePlayers();
           activePlayerId = newId;
           var active = players[activePlayerId];
           state = Object.assign(makeEmptyState(), active.state || {});
-          if (!state.errorWeakness) state.errorWeakness = {};
+          if(!state.errorWeakness) state.errorWeakness = {};
           syncSelectorsFromState();
           updateStats();
           updateBadges();
@@ -1803,21 +1297,20 @@
         });
       }
 
-      if (playerAddBtn) {
-        playerAddBtn.addEventListener("click", function () {
+      if(playerAddBtn){
+        playerAddBtn.addEventListener("click", function(){
           var name = prompt("New player name:", "Player " + (Object.keys(players).length + 1));
-          if (!name) return;
+          if(!name) return;
 
-          var base = name;
-          var counter = 2;
-          var existingNames = Object.keys(players).map(function (id) { return players[id].name; });
-          while (existingNames.indexOf(name) !== -1) {
+          var base = name, counter = 2;
+          var existingNames = Object.keys(players).map(function(id){ return players[id].name; });
+          while(existingNames.indexOf(name) !== -1){
             name = base + " (" + counter + ")";
             counter++;
           }
 
           var newId = "p" + Date.now();
-          players[newId] = { name: name, state: makeEmptyState() };
+          players[newId] = { name:name, state: makeEmptyState() };
           activePlayerId = newId;
           state = makeEmptyState();
           syncSelectorsFromState();
@@ -1828,21 +1321,21 @@
         });
       }
 
-      if (playerDeleteBtn) {
-        playerDeleteBtn.addEventListener("click", function () {
-          if (!activePlayerId || !players[activePlayerId]) return;
-          if (Object.keys(players).length === 1) {
+      if(playerDeleteBtn){
+        playerDeleteBtn.addEventListener("click", function(){
+          if(!activePlayerId || !players[activePlayerId]) return;
+          if(Object.keys(players).length === 1){
             alert("You need at least one player profile.");
             return;
           }
-          if (!confirm("Delete player '" + players[activePlayerId].name + "' and their progress?")) return;
+          if(!confirm("Delete player '" + (players[activePlayerId].name || "player") + "' and their progress?")) return;
 
           delete players[activePlayerId];
           var remainingIds = Object.keys(players);
           activePlayerId = remainingIds[0];
           var active = players[activePlayerId];
           state = Object.assign(makeEmptyState(), active.state || {});
-          if (!state.errorWeakness) state.errorWeakness = {};
+          if(!state.errorWeakness) state.errorWeakness = {};
           refreshPlayerSelect();
           syncSelectorsFromState();
           updateStats();
