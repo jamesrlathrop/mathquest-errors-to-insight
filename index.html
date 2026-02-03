@@ -1248,17 +1248,13 @@
           els.feedback.className = "mq-feedback";
         }
 
-        if(els.queueNote){
-          var inattentionLabel = isInattentionItem(currentItem)
-            ? " <span style='color:var(--mq-warn);'>⚠ Inattention focus</span>"
-            : "";
-          if(next.fromMissed){
-            els.queueNote.innerHTML = "🔁 <strong>Fix-It Queue:</strong> back for another try." + inattentionLabel;
-          }else{
-            var modeLabel = (state.mode === "sweep") ? "🧹 Sweep item." : "✨ New adaptive item.";
-            els.queueNote.innerHTML = modeLabel + inattentionLabel;
-          }
-        }
+       if(els.queueNote){
+  if(next.fromMissed){
+    els.queueNote.innerHTML = "🔁 <strong>Fix-It Queue:</strong> back for another try.";
+  }else{
+    els.queueNote.innerHTML = "✨ New item from this grade band + track.";
+  }
+}
 
         if(!els.options) return;
         els.options.innerHTML = "";
