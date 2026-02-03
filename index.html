@@ -18,7 +18,6 @@
       --mq-scale:1;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -77,23 +76,28 @@
       background:var(--mq-bg);
       position:sticky;top:0;z-index:20;
       gap:10px;
-      flex-wrap:wrap;
     }
     .mq-topbar-title{
       display:flex;
       flex-direction:column;
       gap:2px;
-      min-width:220px;
+      min-width:0;
     }
     .mq-topbar-title strong{
       font-size:15px;
       letter-spacing:.04em;
       font-weight:700;
       color:var(--mq-text);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .mq-topbar-title span{
       font-size:11px;
       color:var(--mq-muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .mq-modebar{
@@ -103,7 +107,7 @@
       padding:2px;
       background:var(--mq-bg);
       border:1px solid var(--mq-border);
-      align-items:center;
+      flex-shrink:0;
     }
     .mq-mode-btn{
       border:none;
@@ -112,33 +116,17 @@
       font-size:12px;
       padding:5px 12px;
       border-radius:999px;
-      cursor:pointer;
+      cursor:default;
       display:inline-flex;
       align-items:center;
       gap:6px;
       user-select:none;
-      white-space:nowrap;
     }
-    .mq-mode-btn:hover{background:rgba(148,163,184,.10)}
     .mq-mode-btn-active{
       background:var(--mq-accent-soft);
       color:#bbf7d0;
-      font-weight:800;
+      font-weight:700;
     }
-
-    .mq-buy-btn{
-      text-decoration:none;
-      border-radius:999px;
-      border:1px solid rgba(34,197,94,.45);
-      padding:7px 12px;
-      background:rgba(34,197,94,.12);
-      color:#bbf7d0;
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.06em;
-      white-space:nowrap;
-    }
-    .mq-buy-btn:hover{background:rgba(34,197,94,.18)}
 
     .mq-shell{display:flex;flex:1;padding:12px;gap:12px}
     .mq-column{display:flex;flex-direction:column;gap:12px}
@@ -203,7 +191,7 @@
       padding:14px 16px 16px;
       box-shadow:0 22px 50px rgba(15,23,42,.8);
     }
-    .mq-game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+    .mq-game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
     .mq-game-title{
       font-size:12px;
       font-weight:800;
@@ -308,36 +296,41 @@
     #mq-about{font-size:11px;color:var(--mq-muted);line-height:1.45}
     #mq-about ul{margin:6px 0 0;padding-left:18px}
 
-    .mq-download-panel{
-      max-width:900px;
-      margin:18px auto 26px;
-      padding:14px 16px;
-      border:1px solid rgba(148,163,184,.22);
-      border-radius:16px;
-      background:rgba(15,23,42,.7);
-    }
-    .mq-download-title{
+    .mq-buy-btn{
+      text-decoration:none;
+      border-radius:999px;
+      border:1px solid rgba(34,197,94,.45);
+      padding:7px 12px;
+      background:rgba(34,197,94,.12);
+      color:#bbf7d0;
+      font-size:12px;
       font-weight:800;
       letter-spacing:.06em;
-      text-transform:uppercase;
-      color:#9ca3af;
-      font-size:12px;
-      margin-bottom:6px;
+      flex-shrink:0;
     }
-    .mq-download-body{
-      color:#e5e7eb;
-      font-size:14px;
-      margin-bottom:6px;
+    .mq-buy-btn:hover{background:rgba(34,197,94,.18)}
+
+    /* Audience view */
+    body.mq-aud-student #mq-notes-panel,
+    body.mq-aud-student #mq-progress-panel{display:none!important}
+    body.mq-aud-parent #mq-progress-panel{display:none!important}
+    body.mq-aud-teacher #mq-notes-panel{display:block!important}
+    body.mq-aud-teacher #mq-progress-panel{display:block!important}
+
+    .mq-progress-list{font-size:11px;color:var(--mq-muted);line-height:1.45}
+    .mq-progress-list .mq-skill{
+      display:flex;justify-content:space-between;gap:10px;
+      padding:4px 0;border-bottom:1px solid rgba(31,41,55,.35);
     }
-    .mq-download-sub{
-      color:#9ca3af;
-      font-size:12px;
-      line-height:1.5;
-    }
+    .mq-progress-list .mq-skill:last-child{border-bottom:none}
+    .mq-skill strong{color:var(--mq-text);font-weight:700}
+    .mq-skill .mq-skill-meta{white-space:nowrap}
+    .mq-skill .mq-ok{color:#bbf7d0}
+    .mq-skill .mq-due{color:var(--mq-warn)}
   </style>
 </head>
 
-<body>
+<body class="mq-aud-student">
   <div id="mq-root">
     <div class="mq-topbar">
       <div class="mq-topbar-title">
@@ -345,16 +338,11 @@
         <span>Fix mistakes fast • Learn why • Stored only on your device</span>
       </div>
 
-      <div class="mq-modebar" aria-label="Mode">
-        <button id="mq-mode-classic" class="mq-mode-btn mq-mode-btn-active" type="button" title="Adaptive mix: difficulty + weaknesses">
-          🎯 Classic
-        </button>
-        <button id="mq-mode-sweep" class="mq-mode-btn" type="button" title="Sweeps through items in a shuffled set for coverage">
-          🧹 Sweep
-        </button>
-      </div>
-
       <a class="mq-buy-btn" href="#download" id="mq-buy-link">Download</a>
+
+      <div class="mq-modebar" aria-label="Mode">
+        <div class="mq-mode-btn mq-mode-btn-active">🧠 Math</div>
+      </div>
     </div>
 
     <div class="mq-shell">
@@ -362,7 +350,7 @@
       <div class="mq-column mq-column-left">
         <div class="mq-panel">
           <div class="mq-panel-title">Session Settings</div>
-          <div class="mq-panel-sub">Choose player, level, track, and accessibility options.</div>
+          <div class="mq-panel-sub">Choose player, audience view, level, track, and accessibility options.</div>
 
           <div class="mq-field">
             <span class="mq-label">Player</span>
@@ -371,6 +359,15 @@
               <button id="mq-player-add" type="button" class="mq-small-btn" title="Add player">+</button>
               <button id="mq-player-delete" type="button" class="mq-small-btn" title="Delete player">–</button>
             </div>
+          </div>
+
+          <div class="mq-field">
+            <span class="mq-label">Audience View</span>
+            <select id="mq-audience">
+              <option value="student">Student</option>
+              <option value="parent">Parent</option>
+              <option value="teacher">Teacher</option>
+            </select>
           </div>
 
           <div class="mq-field">
@@ -504,8 +501,8 @@
           <div class="mq-footer-note">This scoreboard never leaves this browser. It is not shared online.</div>
         </div>
 
-        <div class="mq-panel" style="margin-top:10px;">
-          <div class="mq-panel-title">Teacher / Parent Notes</div>
+        <div class="mq-panel" style="margin-top:10px;" id="mq-notes-panel">
+          <div class="mq-panel-title" id="mq-notes-title">Teacher / Parent Notes</div>
           <div class="mq-panel-sub">Simple, ethical use: low-pressure practice + clear feedback.</div>
           <div style="font-size:11px;color:var(--mq-muted);line-height:1.4;">
             <ul style="padding-left:18px;margin:0;">
@@ -513,28 +510,79 @@
               <li>Ask: “What mistaken idea caused this?” then “What’s the clean fix?”</li>
               <li>If a learner misses an item, read the hint together before the next one.</li>
               <li>Rotate tracks: Operations (procedure) → Reasoning (concept) → Logic &amp; Patterns (thinking).</li>
+              <li><strong>Progression + retention:</strong> the app introduces new skills in order, while periodically revisiting earlier skills that are “due.”</li>
             </ul>
           </div>
         </div>
+
+        <div class="mq-panel" style="margin-top:10px;" id="mq-progress-panel">
+          <div class="mq-panel-title">Progress</div>
+          <div class="mq-panel-sub">Teacher view: skill ladder within the selected grade band + track (no auto band changes).</div>
+          <div id="mq-progress" class="mq-progress-list">Loading…</div>
+          <div class="mq-footer-note">“Due in X plays” means it will reappear later for retention.</div>
+        </div>
       </div>
     </div>
-
-    <!-- ✅ Download is INSIDE mq-root (correct placement) -->
-    <div id="download" class="mq-download-panel">
-      <div class="mq-download-title">Download</div>
-      <div class="mq-download-body">
-        BeTheMath is currently available as a web app. You can use it anytime from this page.
-      </div>
-      <div class="mq-download-sub">
-        We’re preparing an offline installable version and a one-time purchase option.
-        Nothing is collected or tracked; progress stays on your device.
-      </div>
-    </div>
-
-  </div><!-- end #mq-root -->
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+      // ============================================================
+      // Skill ladder + retention (within grade band + track)
+      // ============================================================
+      // Review spacing uses "plays" (answered items) so it works offline.
+      var REVIEW_INTERVAL_PLAYS = [3, 7, 15, 30, 60];
+
+      // Ladders are per gradeBand|track. No automatic grade-band advance.
+      var SKILL_LADDERS = {
+        "K-2|operations": ["k2_addition_meaning", "k2_subtraction_meaning"],
+        "K-2|reasoning": ["k2_place_value_language"],
+        "K-2|logic": ["k2_patterns_plus2"],
+
+        "3-5|operations": ["35_regrouping_addition"],
+        "3-5|reasoning": ["35_decimal_percent"],
+        "3-5|logic": ["35_odd_one_out"],
+
+        "6-8|operations": ["68_fraction_add_common_den", "68_integer_add_signs", "68_distribution_all_terms"],
+        "6-8|reasoning": ["68_square_negative", "68_proportional_scaling"],
+        "6-8|logic": ["68_pattern_doubling", "68_logic_categories"],
+
+        "Alg1|operations": ["alg1_distribution"],
+        "Geo|reasoning": ["geo_triangle_angle_sum"],
+        "Alg2|operations": [],
+        "Trig|reasoning": ["trig_unit_circle_sin"],
+        "PreCalc|operations": [],
+        "Calc|operations": []
+      };
+
+      var SKILL_LABELS = {
+        // K–2
+        "k2_addition_meaning":"Addition means combine (not stick digits)",
+        "k2_subtraction_meaning":"Subtraction means take away (watch zeros)",
+        "k2_place_value_language":"Place value language → correct numeral",
+        "k2_patterns_plus2":"Patterns: rule (+2)",
+
+        // 3–5
+        "35_regrouping_addition":"Regrouping (carry) in addition",
+        "35_decimal_percent":"Decimals ↔ percents (0.5 = 50%)",
+        "35_odd_one_out":"Logic: odd-one-out by property",
+
+        // 6–8
+        "68_fraction_add_common_den":"Add fractions using common denominators",
+        "68_integer_add_signs":"Integer addition: compare absolute values",
+        "68_distribution_all_terms":"Distribute to every term",
+        "68_square_negative":"Squaring negatives: (−3)(−3)=+9",
+        "68_proportional_scaling":"Proportionality: y=kx scales with x",
+        "68_pattern_doubling":"Patterns: multiplicative rule (×2)",
+        "68_logic_categories":"Logic: subsets (square ⇒ rectangle)",
+
+        // Algebra/Geo/Trig
+        "alg1_distribution":"Distribution in algebraic expressions",
+        "geo_triangle_angle_sum":"Triangle angle sum is always 180°",
+        "trig_unit_circle_sin":"Unit circle: sin(π)=0 (y-coordinate)"
+      };
+
       // -----------------------------
       // Content: Items (errors + fixes)
       // -----------------------------
@@ -542,6 +590,7 @@
         // ---------------- K–2 OPERATIONS ----------------
         {
           id:"k2-op-1", gradeBand:"K-2", track:"operations", difficulty:"easy",
+          skillId:"k2_addition_meaning",
           errorType:"digit-append", inattention:false,
           prompt:"A student writes 7 + 5 = 75. What went wrong?",
           work:"Student work: 7 + 5 = 75",
@@ -557,6 +606,7 @@
         },
         {
           id:"k2-op-2", gradeBand:"K-2", track:"operations", difficulty:"easy",
+          skillId:"k2_subtraction_meaning",
           errorType:"extra-zero", inattention:true,
           prompt:"A student computes 10 − 7 = 3, but writes 30 as the answer.",
           work:"Student work: 10 − 7 = 30",
@@ -574,6 +624,7 @@
         // ---------------- K–2 REASONING ----------------
         {
           id:"k2-re-1", gradeBand:"K-2", track:"reasoning", difficulty:"easy",
+          skillId:"k2_place_value_language",
           errorType:"place-value-language", inattention:false,
           prompt:"A student says 15 is 'one ten and five ones', then writes 105.",
           work:"Student work: 15 = 105",
@@ -591,6 +642,7 @@
         // ---------------- K–2 LOGIC ----------------
         {
           id:"k2-lo-1", gradeBand:"K-2", track:"logic", difficulty:"easy",
+          skillId:"k2_patterns_plus2",
           errorType:"pattern-next", inattention:false,
           prompt:"Pattern: 2, 4, 6, 8, ___. What comes next?",
           work:"Student idea: 'It goes 2,4,6,8... maybe 9?'",
@@ -608,6 +660,7 @@
         // ---------------- 3–5 OPERATIONS ----------------
         {
           id:"35-op-1", gradeBand:"3-5", track:"operations", difficulty:"medium",
+          skillId:"35_regrouping_addition",
           errorType:"carry-borrow", inattention:false,
           prompt:"A student solves 27 + 38 and writes 55.",
           work:"Student work: 27 + 38 = 55",
@@ -625,6 +678,7 @@
         // ---------------- 3–5 REASONING ----------------
         {
           id:"35-re-1", gradeBand:"3-5", track:"reasoning", difficulty:"medium",
+          skillId:"35_decimal_percent",
           errorType:"percent-decimal", inattention:false,
           prompt:"A student says 0.5 is the same as 5%.",
           work:"Student idea: 0.5 = 5%",
@@ -642,6 +696,7 @@
         // ---------------- 3–5 LOGIC ----------------
         {
           id:"35-lo-1", gradeBand:"3-5", track:"logic", difficulty:"medium",
+          skillId:"35_odd_one_out",
           errorType:"odd-one-out", inattention:false,
           prompt:"Which one does NOT belong: square, triangle, rectangle, circle?",
           work:"Student thought: 'rectangle doesn't belong because it is long.'",
@@ -659,6 +714,7 @@
         // ---------------- 6–8 OPERATIONS ----------------
         {
           id:"68-op-1", gradeBand:"6-8", track:"operations", difficulty:"medium",
+          skillId:"68_fraction_add_common_den",
           errorType:"fraction-addition", inattention:false,
           prompt:"A student adds fractions and gets 1/4 + 1/2 = 2/6.",
           work:"Student work: 1/4 + 1/2 = 2/6",
@@ -674,6 +730,7 @@
         },
         {
           id:"68-op-2", gradeBand:"6-8", track:"operations", difficulty:"medium",
+          skillId:"68_integer_add_signs",
           errorType:"integer-sign", inattention:true,
           prompt:"A student computes −8 + 5 and writes −13.",
           work:"Student work: −8 + 5 = −13",
@@ -689,6 +746,7 @@
         },
         {
           id:"68-op-3", gradeBand:"6-8", track:"operations", difficulty:"medium",
+          skillId:"68_distribution_all_terms",
           errorType:"distribution", inattention:false,
           prompt:"A student simplifies 3(x − 4) and writes 3x − 4.",
           work:"Student work: 3(x − 4) = 3x − 4",
@@ -706,6 +764,7 @@
         // ---------------- 6–8 REASONING ----------------
         {
           id:"68-re-1", gradeBand:"6-8", track:"reasoning", difficulty:"medium",
+          skillId:"68_square_negative",
           errorType:"square-negative", inattention:false,
           prompt:"A student says (−3)² = −9 because 'the answer stays negative'.",
           work:"Student work: (−3)² = −9",
@@ -721,6 +780,7 @@
         },
         {
           id:"68-re-2", gradeBand:"6-8", track:"reasoning", difficulty:"hard",
+          skillId:"68_proportional_scaling",
           errorType:"proportion", inattention:false,
           prompt:"In y = kx (a proportional relationship), a student says doubling x makes y stay the same.",
           work:"Student statement: 'y doesn’t change when x doubles.'",
@@ -738,6 +798,7 @@
         // ---------------- 6–8 LOGIC ----------------
         {
           id:"68-lo-1", gradeBand:"6-8", track:"logic", difficulty:"medium",
+          skillId:"68_pattern_doubling",
           errorType:"pattern-rule", inattention:false,
           prompt:"Pattern: 3, 6, 12, 24, ___. What comes next?",
           work:"Student guess: 'Maybe add 6 to get 30?'",
@@ -753,6 +814,7 @@
         },
         {
           id:"68-lo-2", gradeBand:"6-8", track:"logic", difficulty:"hard",
+          skillId:"68_logic_categories",
           errorType:"if-then", inattention:false,
           prompt:"Logic: If ALL squares are rectangles, and shape A is a square, what must be true?",
           work:"Student thought: 'A might be a rectangle, but not sure.'",
@@ -770,6 +832,7 @@
         // ---------------- Algebra I OPERATIONS ----------------
         {
           id:"alg1-op-1", gradeBand:"Alg1", track:"operations", difficulty:"medium",
+          skillId:"alg1_distribution",
           errorType:"distribution", inattention:false,
           prompt:"A student expands 2(x + 3) as 2x + 3.",
           work:"Student work: 2(x + 3) = 2x + 3",
@@ -781,12 +844,13 @@
           ],
           correctIndex:0,
           hint:"How many terms are inside the parentheses?",
-          insight:"Misconception: “multiply only the variable.” Principle: distribute to every term. Correct: 2x+6."
+          insight:"Misconception: “multiply only the variable.” Principle: distribute to every term. Correct: 2x + 6."
         },
 
         // ---------------- Geometry REASONING ----------------
         {
           id:"geo-re-1", gradeBand:"Geo", track:"reasoning", difficulty:"medium",
+          skillId:"geo_triangle_angle_sum",
           errorType:"triangle-angle-sum", inattention:false,
           prompt:"A student says triangle angles add to 200° because '100+50+50=200'.",
           work:"Student work: angle sum = 200°",
@@ -804,6 +868,7 @@
         // ---------------- Trigonometry REASONING ----------------
         {
           id:"trig-re-1", gradeBand:"Trig", track:"reasoning", difficulty:"hard",
+          skillId:"trig_unit_circle_sin",
           errorType:"unit-circle", inattention:true,
           prompt:"A student evaluates sin(π) and writes 1 because 'π is 180°, the top of the circle.'",
           work:"Student work: sin(π) = 1",
@@ -826,18 +891,18 @@
         return {
           xp:0, coins:0, streak:0, played:0,
           gradeBand:"6-8",        // ✅ default start at 6–8
-          track:"operations",     // default track
-          mode:"classic",         // ✅ classic | sweep
+          track:"operations",
+          audience:"student",     // ✅ student/parent/teacher view
           missed:[],
           errorWeakness:{},
-          sweepQueues:{}          // keyed queues for sweep mode
+          skillCursor:{},         // per "grade|track" -> ladder index
+          skillData:{}            // per "grade|track" -> map skillId -> data
         };
       }
 
-      var STORAGE_KEYS = ["bethemath_players_v1","mathquest_players_v1"]; // try new, then old
+      var STORAGE_KEYS = ["bethemath_players_v2","bethemath_players_v1","mathquest_players_v1"];
       var SAVE_KEY = STORAGE_KEYS[0];
 
-      function isInattentionItem(item){ return !!(item && item.inattention); }
       var state = makeEmptyState();
       var players = {};
       var activePlayerId = null;
@@ -848,6 +913,7 @@
       var els = {
         grade:$("mq-grade"),
         track:$("mq-track"),
+        audience:$("mq-audience"),
         question:$("mq-question"),
         work:$("mq-work"),
         options:$("mq-options"),
@@ -864,12 +930,12 @@
         reset:$("mq-reset"),
         insightLog:$("mq-insight-log"),
         scoreboard:$("mq-scoreboard"),
+        progress:$("mq-progress"),
+        notesTitle:$("mq-notes-title"),
         miniXP:$("mq-mini-xp"),
         miniStreak:$("mq-mini-streak"),
         miniFocus:$("mq-mini-focus"),
-        miniType:$("mq-mini-type"),
-        modeClassic:$("mq-mode-classic"),
-        modeSweep:$("mq-mode-sweep")
+        miniType:$("mq-mini-type")
       };
 
       var scaleSlider = $("mq-scale");
@@ -892,13 +958,14 @@
         }catch(e){ return null; }
       }
 
-      function migrateState(st){
+      function coerceState(st){
         var base = makeEmptyState();
         var merged = Object.assign(base, st || {});
         if(!merged.errorWeakness) merged.errorWeakness = {};
         if(!merged.missed) merged.missed = [];
-        if(!merged.mode) merged.mode = "classic";
-        if(!merged.sweepQueues) merged.sweepQueues = {};
+        if(!merged.skillCursor) merged.skillCursor = {};
+        if(!merged.skillData) merged.skillData = {};
+        if(!merged.audience) merged.audience = "student";
         return merged;
       }
 
@@ -926,7 +993,7 @@
 
         var active = players[activePlayerId];
         if(active && active.state){
-          state = migrateState(active.state);
+          state = coerceState(active.state);
         }else{
           state = makeEmptyState();
         }
@@ -963,32 +1030,38 @@
         });
       }
 
-      function updateModeUI(){
-        if(!els.modeClassic || !els.modeSweep) return;
-        var classic = state.mode !== "sweep";
-        els.modeClassic.classList.toggle("mq-mode-btn-active", classic);
-        els.modeSweep.classList.toggle("mq-mode-btn-active", !classic);
+      function updateAudienceUI(){
+        var aud = state.audience || "student";
+        document.body.classList.remove("mq-aud-student","mq-aud-parent","mq-aud-teacher");
+        document.body.classList.add("mq-aud-" + aud);
+
+        if(els.notesTitle){
+          els.notesTitle.textContent = aud === "parent" ? "Parent Notes" : "Teacher / Parent Notes";
+        }
       }
 
       function syncSelectorsFromState(){
         if(els.grade) els.grade.value = state.gradeBand;
         if(els.track) els.track.value = state.track;
+        if(els.audience) els.audience.value = state.audience || "student";
+        updateAudienceUI();
         updateMiniHeader();
-        updateModeUI();
+        updateProgressUI();
       }
 
       function updateMiniHeader(){
         if(els.miniXP) els.miniXP.textContent = state.xp || 0;
         if(els.miniStreak) els.miniStreak.textContent = state.streak || 0;
         if(els.miniFocus){
-          var gb = (state.gradeBand || "6-8").replace("Alg1","Algebra I").replace("Alg2","Algebra II")
-            .replace("Geo","Geometry").replace("Trig","Trigonometry").replace("PreCalc","Pre-Calculus").replace("Calc","Calculus");
+          var gb = (state.gradeBand || "6-8")
+            .replace("Alg1","Algebra I").replace("Alg2","Algebra II")
+            .replace("Geo","Geometry").replace("Trig","Trigonometry")
+            .replace("PreCalc","Pre-Calculus").replace("Calc","Calculus");
           var tr = state.track === "logic" ? "Logic & Patterns" : (state.track === "reasoning" ? "Reasoning" : "Operations");
           els.miniFocus.textContent = gb + " • " + tr;
         }
         if(els.miniType){
-          var modeLabel = state.mode === "sweep" ? "Mode: Sweep (coverage)" : "Mode: Classic (adaptive)";
-          els.miniType.textContent = "Focus: common errors & clean fixes • " + modeLabel;
+          els.miniType.textContent = "Focus: common errors & clean fixes";
         }
       }
 
@@ -1003,7 +1076,7 @@
 
         var summary = ids.map(function(id){
           var p = players[id];
-          var st = migrateState(p.state || {});
+          var st = coerceState(p.state);
           return { name: p.name || id, xp: st.xp || 0, coins: st.coins || 0 };
         });
 
@@ -1029,6 +1102,7 @@
         updateMiniHeader();
         savePlayers();
         updateScoreboard();
+        updateProgressUI();
       }
 
       function updateBadges(){
@@ -1041,7 +1115,6 @@
         if(state.xp >= 25) list.push("25+ XP");
         if(state.xp >= 60) list.push("60+ XP");
         if(state.missed && state.missed.length >= 3) list.push("Fix-It Queue");
-        if(state.mode === "sweep") list.push("Sweep Mode");
 
         list.forEach(function(label){
           var chip = document.createElement("div");
@@ -1051,167 +1124,206 @@
         });
       }
 
-      function getPool(){
+      // ============================================================
+      // Progression + retention engine
+      // ============================================================
+      function bandTrackKey(){
+        return (state.gradeBand || "6-8") + "|" + (state.track || "operations");
+      }
+
+      function ensureSkillStructures(key){
+        if(!state.skillCursor) state.skillCursor = {};
+        if(!state.skillData) state.skillData = {};
+        if(typeof state.skillCursor[key] !== "number") state.skillCursor[key] = 0;
+        if(!state.skillData[key] || typeof state.skillData[key] !== "object") state.skillData[key] = {};
+      }
+
+      function ladderFor(key){
+        return SKILL_LADDERS[key] || [];
+      }
+
+      function skillLabel(skillId){
+        return SKILL_LABELS[skillId] || skillId;
+      }
+
+      function skillDataFor(key, skillId){
+        ensureSkillStructures(key);
+        if(!state.skillData[key][skillId]){
+          state.skillData[key][skillId] = {
+            attempts:0,
+            correct:0,
+            correctStreak:0,
+            intervalIdx:0,
+            dueAt:0,
+            mastered:false
+          };
+        }
+        return state.skillData[key][skillId];
+      }
+
+      function isSkillMastered(key, skillId){
+        var d = state.skillData && state.skillData[key] && state.skillData[key][skillId];
+        return !!(d && d.mastered);
+      }
+
+      function advanceCursorPastMastered(key){
+        ensureSkillStructures(key);
+        var ladder = ladderFor(key);
+        var idx = state.skillCursor[key] || 0;
+
+        while(idx < ladder.length && isSkillMastered(key, ladder[idx])){
+          idx++;
+        }
+        state.skillCursor[key] = idx;
+      }
+
+      function currentNewSkill(key){
+        ensureSkillStructures(key);
+        advanceCursorPastMastered(key);
+        var ladder = ladderFor(key);
+        var idx = state.skillCursor[key] || 0;
+        if(idx >= 0 && idx < ladder.length) return ladder[idx];
+        return null;
+      }
+
+      function dueReviewSkills(key){
+        ensureSkillStructures(key);
+        var map = state.skillData[key] || {};
+        var due = [];
+        Object.keys(map).forEach(function(skillId){
+          var d = map[skillId];
+          if(!d) return;
+          if(d.attempts <= 0) return;
+          if((d.dueAt || 0) <= (state.played || 0)){
+            due.push(skillId);
+          }
+        });
+        return due;
+      }
+
+      function itemsForSkill(key, skillId){
+        var parts = key.split("|");
+        var band = parts[0], track = parts[1];
+        return ITEMS.filter(function(it){
+          return it.gradeBand === band && it.track === track && it.skillId === skillId;
+        });
+      }
+
+      function fallbackPool(){
         return ITEMS.filter(function(item){
           return item.gradeBand === state.gradeBand && item.track === state.track;
         });
       }
 
-      function getTopWeakErrorTypes(){
-        var map = state.errorWeakness || {};
-        var types = Object.keys(map);
-        if(types.length === 0) return [];
-        var entries = types.map(function(t){ return { type:t, score: map[t] }; });
-        entries.sort(function(a,b){ return b.score - a.score; });
-        var filtered = entries.filter(function(e){ return e.score >= 2; });
-        if(filtered.length === 0) return [];
-        return filtered.map(function(e){ return e.type; });
-      }
+      // ============================================================
+      // Selection logic: Fix-It Queue → Due reviews → New skill → fallback
+      // ============================================================
+      var lastPickedSkillId = null;
+      var currentItem = null;
 
-      function pickDifficultyFromPool(pool){
-        if(!pool || pool.length === 0) return null;
-
-        var present = { easy:false, medium:false, hard:false };
-        pool.forEach(function(item){
-          if(item.difficulty && present.hasOwnProperty(item.difficulty)) present[item.difficulty] = true;
-        });
-
-        var streak = state.streak || 0;
-        var weights = { easy:0, medium:0, hard:0 };
-
-        if(streak <= 1){ weights.easy=.7; weights.medium=.25; weights.hard=.05; }
-        else if(streak <= 4){ weights.easy=.4; weights.medium=.4; weights.hard=.2; }
-        else { weights.easy=.2; weights.medium=.4; weights.hard=.4; }
-
-        var available = [];
-        ["easy","medium","hard"].forEach(function(d){
-          if(present[d] && weights[d] > 0) available.push({ difficulty:d, weight:weights[d] });
-        });
-
-        if(available.length === 0){
-          var fallback = [];
-          pool.forEach(function(item){
-            if(item.difficulty && present.hasOwnProperty(item.difficulty) && fallback.indexOf(item.difficulty) === -1){
-              fallback.push(item.difficulty);
-            }
-          });
-          if(fallback.length === 0) return null;
-          return fallback[Math.floor(Math.random()*fallback.length)];
+      function pickFromList(list){
+        if(!list || list.length === 0) return null;
+        if(list.length > 1 && lastItemId){
+          var filtered = list.filter(function(x){ return x.id !== lastItemId; });
+          if(filtered.length) list = filtered;
         }
-
-        var total = available.reduce(function(sum,d){ return sum + d.weight; }, 0);
-        var r = Math.random()*total;
-        var acc = 0;
-        for(var i=0;i<available.length;i++){
-          acc += available[i].weight;
-          if(r <= acc) return available[i].difficulty;
-        }
-        return available[available.length - 1].difficulty;
-      }
-
-      function chooseAdaptiveFromPool(pool){
-        if(!pool || pool.length === 0) return null;
-
-        var difficulty = pickDifficultyFromPool(pool);
-        var candidates = pool;
-
-        if(difficulty){
-          var filtered = pool.filter(function(item){ return item.difficulty === difficulty; });
-          if(filtered.length > 0) candidates = filtered;
-        }
-
-        var weakTypes = getTopWeakErrorTypes();
-        if(weakTypes.length > 0 && Math.random() < 0.5){
-          var focusType = weakTypes[0];
-          var typeFiltered = candidates.filter(function(item){ return item.errorType === focusType; });
-          if(typeFiltered.length > 0) candidates = typeFiltered;
-        }
-
-        if(candidates.length > 1 && lastItemId){
-          var diffCandidates = candidates.filter(function(item){ return item.id !== lastItemId; });
-          if(diffCandidates.length > 0) candidates = diffCandidates;
-        }
-
-        return candidates[Math.floor(Math.random()*candidates.length)];
-      }
-
-      function shuffle(arr){
-        for(var i=arr.length-1;i>0;i--){
-          var j = Math.floor(Math.random()*(i+1));
-          var t = arr[i]; arr[i]=arr[j]; arr[j]=t;
-        }
-        return arr;
-      }
-
-      function sweepKey(){
-        return (state.gradeBand || "6-8") + "|" + (state.track || "operations");
-      }
-
-      function ensureSweepQueue(pool){
-        if(!state.sweepQueues) state.sweepQueues = {};
-        var key = sweepKey();
-        var q = state.sweepQueues[key];
-
-        // rebuild if missing or contains ids not in pool
-        var poolIds = pool.map(function(i){ return i.id; });
-        var poolSet = {};
-        poolIds.forEach(function(id){ poolSet[id]=true; });
-
-        var needsRebuild = false;
-        if(!Array.isArray(q) || q.length === 0) needsRebuild = true;
-        if(!needsRebuild){
-          for(var i=0;i<q.length;i++){
-            if(!poolSet[q[i]]) { needsRebuild = true; break; }
-          }
-        }
-
-        if(needsRebuild){
-          q = shuffle(poolIds.slice());
-          state.sweepQueues[key] = q;
-          savePlayers();
-        }
-        return state.sweepQueues[key];
+        return list[Math.floor(Math.random()*list.length)];
       }
 
       function getNextItem(){
         var fromMissed = false;
-        var item = null;
 
-        // Fix-It Queue chance
-        if(state.missed && state.missed.length > 0 && Math.random() < 0.4){
+        // 1) Fix-It Queue (retention of misses)
+        if(state.missed && state.missed.length > 0 && Math.random() < 0.35){
           var idx = Math.floor(Math.random()*state.missed.length);
-          item = state.missed[idx];
-          fromMissed = true;
+          var item = state.missed[idx];
           state.missed.splice(idx, 1);
-          return { item:item, fromMissed:fromMissed };
+          fromMissed = true;
+          return { item:item || null, fromMissed:fromMissed, source:"fixit" };
         }
 
-        var pool = getPool();
-        if(pool.length === 0) return { item:null, fromMissed:false };
+        var key = bandTrackKey();
+        ensureSkillStructures(key);
 
-        if(state.mode === "sweep"){
-          var q = ensureSweepQueue(pool);
-          if(q.length === 0){
-            state.sweepQueues[sweepKey()] = shuffle(pool.map(function(i){ return i.id; }));
-            q = state.sweepQueues[sweepKey()];
+        // 2) Due review skills (spaced-ish retention)
+        var due = dueReviewSkills(key);
+        if(due.length > 0 && Math.random() < 0.35){
+          // try not to hammer the same skill twice in a row
+          if(due.length > 1 && lastPickedSkillId){
+            var filteredDue = due.filter(function(s){ return s !== lastPickedSkillId; });
+            if(filteredDue.length) due = filteredDue;
           }
-          var nextId = q.shift();
-          for(var i=0;i<pool.length;i++){
-            if(pool[i].id === nextId){ item = pool[i]; break; }
+          var skillId = due[Math.floor(Math.random()*due.length)];
+          var skillItems = itemsForSkill(key, skillId);
+          var picked = pickFromList(skillItems);
+          if(picked){
+            lastPickedSkillId = skillId;
+            return { item:picked, fromMissed:false, source:"review" };
           }
-          if(!item){
-            item = pool[Math.floor(Math.random()*pool.length)];
-          }
-          return { item:item, fromMissed:false };
         }
 
-        // classic (adaptive)
-        item = chooseAdaptiveFromPool(pool) || pool[Math.floor(Math.random()*pool.length)];
-        return { item:item, fromMissed:false };
+        // 3) New skill in ladder order
+        var newSkill = currentNewSkill(key);
+        if(newSkill){
+          var newItems = itemsForSkill(key, newSkill);
+          var pickedNew = pickFromList(newItems);
+          if(pickedNew){
+            lastPickedSkillId = newSkill;
+            return { item:pickedNew, fromMissed:false, source:"new" };
+          }
+        }
+
+        // 4) Fallback: any item in this band+track
+        var pool = fallbackPool();
+        var fallback = pickFromList(pool);
+        return { item:fallback || null, fromMissed:false, source:"fallback" };
       }
 
-      var currentItem = null;
+      function updateProgressUI(){
+        if(!els.progress) return;
+        var key = bandTrackKey();
+        var ladder = ladderFor(key);
+        ensureSkillStructures(key);
+        advanceCursorPastMastered(key);
 
+        if(ladder.length === 0){
+          els.progress.textContent = "No ladder defined for this grade band + track yet.";
+          return;
+        }
+
+        var html = "";
+        ladder.forEach(function(skillId, index){
+          var d = skillDataFor(key, skillId);
+          var mastered = !!d.mastered;
+          var isCurrent = (currentNewSkill(key) === skillId);
+
+          var right = "";
+          if(mastered){
+            right = "<span class='mq-ok'>✓ mastered</span>";
+          }else{
+            var dueIn = Math.max(0, (d.dueAt || 0) - (state.played || 0));
+            right = (d.attempts > 0)
+              ? "<span class='mq-due'>due in " + dueIn + " plays</span>"
+              : "<span class='mq-skill-meta'>new</span>";
+          }
+
+          var label = skillLabel(skillId);
+          if(isCurrent && !mastered){
+            label = "▶ " + label;
+          }
+
+          html += "<div class='mq-skill'>"
+               + "<div><strong>" + (index+1) + ".</strong> " + label + "</div>"
+               + "<div class='mq-skill-meta'>" + right + "</div>"
+               + "</div>";
+        });
+
+        els.progress.innerHTML = html;
+      }
+
+      // ============================================================
+      // Rendering + feedback
+      // ============================================================
       function appendInsightLog(item, correct){
         if(!els.insightLog || !item) return;
         var div = document.createElement("div");
@@ -1225,7 +1337,7 @@
         currentItem = next.item;
 
         if(nextTimer){ clearTimeout(nextTimer); nextTimer = null; }
-        if(nextButton) nextButton.disabled = !currentItem;
+        if(nextButton) nextButton.disabled = false;
 
         if(!currentItem){
           if(els.question) els.question.textContent = "No items for this grade band + track yet.";
@@ -1248,13 +1360,18 @@
           els.feedback.className = "mq-feedback";
         }
 
-       if(els.queueNote){
-  if(next.fromMissed){
-    els.queueNote.innerHTML = "🔁 <strong>Fix-It Queue:</strong> back for another try.";
-  }else{
-    els.queueNote.innerHTML = "✨ New item from this grade band + track.";
-  }
-}
+        // IMPORTANT: no “inattention focus” spoiler labels
+        if(els.queueNote){
+          if(next.fromMissed){
+            els.queueNote.innerHTML = "🔁 <strong>Fix-It Queue:</strong> back for another try.";
+          }else{
+            var src = next.source || "new";
+            var msg = (src === "review") ? "🧠 Review item for retention."
+                    : (src === "fallback") ? "✨ Practice item in this track."
+                    : "✨ New item in your current skill ladder.";
+            els.queueNote.innerHTML = msg;
+          }
+        }
 
         if(!els.options) return;
         els.options.innerHTML = "";
@@ -1297,6 +1414,39 @@
         }, autoAdvanceDelayMs);
       }
 
+      function handleSkillProgress(correct, item){
+        if(!item || !item.skillId) return;
+        var key = bandTrackKey();
+        ensureSkillStructures(key);
+
+        var d = skillDataFor(key, item.skillId);
+        d.attempts += 1;
+
+        if(correct){
+          d.correct += 1;
+          d.correctStreak = (d.correctStreak || 0) + 1;
+
+          // schedule review even before mastery so it reappears later
+          var interval = REVIEW_INTERVAL_PLAYS[Math.min(d.intervalIdx || 0, REVIEW_INTERVAL_PLAYS.length-1)];
+          d.dueAt = (state.played || 0) + interval;
+
+          // mastery threshold: 2 correct in a row for that skill
+          if(d.correctStreak >= 2){
+            d.mastered = true;
+            d.intervalIdx = Math.min((d.intervalIdx || 0) + 1, REVIEW_INTERVAL_PLAYS.length-1);
+            var post = REVIEW_INTERVAL_PLAYS[d.intervalIdx];
+            d.dueAt = (state.played || 0) + post;
+
+            // move ladder cursor forward if needed
+            advanceCursorPastMastered(key);
+          }
+        }else{
+          d.correctStreak = 0;
+          // make it come back sooner when missed
+          d.dueAt = (state.played || 0) + 2;
+        }
+      }
+
       function handleAnswer(selectedIndex){
         if(!currentItem) return;
 
@@ -1316,11 +1466,15 @@
         playBeep(correct);
         state.played += 1;
 
+        // weakness tracking (kept)
         if(!state.errorWeakness) state.errorWeakness = {};
         if(!correct && currentItem.errorType){
           if(!state.errorWeakness[currentItem.errorType]) state.errorWeakness[currentItem.errorType] = 0;
           state.errorWeakness[currentItem.errorType] += 1;
         }
+
+        // progression + retention update
+        handleSkillProgress(correct, currentItem);
 
         if(correct){
           state.xp += 5;
@@ -1358,17 +1512,9 @@
         }
       }
 
-      function setMode(newMode){
-        state.mode = (newMode === "sweep") ? "sweep" : "classic";
-        updateModeUI();
-        updateMiniHeader();
-        savePlayers();
-        renderItem(getNextItem());
-      }
-
-      if(els.modeClassic) els.modeClassic.addEventListener("click", function(){ setMode("classic"); });
-      if(els.modeSweep) els.modeSweep.addEventListener("click", function(){ setMode("sweep"); });
-
+      // -----------------------------
+      // Event wiring
+      // -----------------------------
       if(els.grade){
         els.grade.addEventListener("change", function(e){
           state.gradeBand = e.target.value;
@@ -1385,19 +1531,33 @@
         });
       }
 
+      if(els.audience){
+        els.audience.addEventListener("change", function(e){
+          state.audience = e.target.value;
+          updateAudienceUI();
+          updateStats();
+        });
+      }
+
       if(els.highContrast) els.highContrast.addEventListener("change", applyVisualToggles);
       if(els.dyslexic) els.dyslexic.addEventListener("change", applyVisualToggles);
 
       if(els.reset){
         els.reset.addEventListener("click", function(){
-          if(!confirm("Reset XP, coins, streak, and Fix-It Queue for this player?")) return;
+          if(!confirm("Reset XP, coins, streak, Fix-It Queue, and skill progress for this player?")) return;
+          var keepBand = els.grade ? els.grade.value : "6-8";
+          var keepTrack = els.track ? els.track.value : "operations";
+          var keepAud = els.audience ? els.audience.value : "student";
+
           state = makeEmptyState();
-          state.gradeBand = els.grade ? els.grade.value : "6-8";
-          state.track = els.track ? els.track.value : "operations";
+          state.gradeBand = keepBand;
+          state.track = keepTrack;
+          state.audience = keepAud;
+
           if(els.insightLog) els.insightLog.innerHTML = "";
+          syncSelectorsFromState();
           updateStats();
           updateBadges();
-          updateModeUI();
           renderItem(getNextItem());
         });
       }
@@ -1447,7 +1607,7 @@
           savePlayers();
           activePlayerId = newId;
           var active = players[activePlayerId];
-          state = migrateState(active.state || {});
+          state = coerceState(active.state || {});
           syncSelectorsFromState();
           updateStats();
           updateBadges();
@@ -1492,7 +1652,7 @@
           var remainingIds = Object.keys(players);
           activePlayerId = remainingIds[0];
           var active = players[activePlayerId];
-          state = migrateState(active.state || {});
+          state = coerceState(active.state || {});
           refreshPlayerSelect();
           syncSelectorsFromState();
           updateStats();
@@ -1512,5 +1672,18 @@
       renderItem(getNextItem());
     });
   </script>
+
+  <div id="download" style="max-width:900px;margin:24px auto;padding:14px 16px;border:1px solid rgba(148,163,184,.22);border-radius:16px;background:rgba(15,23,42,.7);">
+    <div style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;font-size:12px;margin-bottom:6px;">
+      Download
+    </div>
+    <div style="color:#e5e7eb;font-size:14px;margin-bottom:6px;">
+      BeTheMath is currently available as a web app. You can use it anytime from this page.
+    </div>
+    <div style="color:#9ca3af;font-size:12px;line-height:1.5;">
+      We’re preparing an offline installable version and a one-time purchase option. Nothing is collected or tracked; progress stays on your device.
+    </div>
+  </div>
+
 </body>
 </html>
