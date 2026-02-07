@@ -1239,4 +1239,314 @@
 
       if(els.reset){
         els.reset.addEventListener("click", function(){
-          if(!confirm("Reset XP, coins, streak, and Fix-It Queue for th
+          if(!confirm("Reset XP, coins, streak, and Fix-It Queue for this player?")) return;
+          state = makeEmptyState();
+          state.gradeBand = els.grade ? els.grade.value : "6-8";
+          state.track = els.track ? els.track.value : "operations";
+          if(els.insightLog) els.insightLog.innerHTML = "";
+          updateStats();
+          updateBadges();
+          renderItem(getNextItem());
+        });
+      }
+
+      if(scaleSlider){
+        var initialScale = scaleSlider.value ? (parseInt(scaleSlider.value,10)/100) : 1;
+        document.documentElement.style.setProperty("--mq-scale", initialScale);
+        scaleSlider.addEventListener("input", function(e){
+          var value = parseInt(e.target.value,10) || 100;
+          document.documentElement.style.setProperty("--mq-scale", value/100);
+        });
+      }
+
+      if(delaySlider){
+        autoAdvanceDelayMs = (parseInt(delaySlider.value,10) || 5) * 1000;
+        delaySlider.addEventListener("input", function(e){
+          var secs = parseInt(e.target.value,10) || 5;
+          autoAdvanceDelayMs = secs * 1000;
+        });
+      }
+
+      if(sfxButton){
+        sfxButton.classList.add("mq-sfx-on");
+        sfxButton.addEventListener("click", function(){
+          sfxOn = !sfxOn;
+          sfxButton.textContent = sfxOn ? "SFX: ON" : "SFX: OFF";
+          if(sfxOn) sfxButton.classList.add("mq-sfx-on");
+          else sfxButton.classList.remove("mq-sfx-on");
+        });
+      }
+
+      if(nextButton){
+        nextButton.addEventListener("click", function(){
+          if(nextTimer){ clearTimeout(nextTimer); nextTimer=null; }
+          renderItem(getNextItem());
+        });
+      }
+
+      // Player UI
+      var playerSelect = $("mq-player");
+      var playerAddBtn = $("mq-player-add");
+      var playerDeleteBtn = $("mq-player-delete");
+
+      if(playerSelect){
+        playerSelect.addEventListener("change", function(e){
+          var newId = e.target.value;
+          if(!players[newId]) return;
+          savePlayers();
+          activePlayerId = newId;
+          var active = players[activePlayerId];
+          state = Object.assign(makeEmptyState(), active.state || {});
+          if(!state.errorWeakness) state.errorWeakness = {};
+          syncSelectorsFromState();
+          updateStats();
+          updateBadges();
+          renderItem(getNextItem());
+        });
+      }
+
+      if(playerAddBtn){
+        playerAddBtn.addEventListener("click", function(){
+          var name = prompt("New player name:", "Player " + (Object.keys(players).length + 1));
+          if(!name) return;
+
+          var base = name, counter = 2;
+          var existingNames = Object.keys(players).map(function(id){ return players[id].name; });
+          while(existingNames.indexOf(name) !== -1){
+            name = base + " (" + counter + ")";
+            counter++;
+          }
+
+          var newId = "p" + Date.now();
+          players[newId] = { name:name, state: makeEmptyState() };
+          activePlayerId = newId;
+          state = makeEmptyState();
+          syncSelectorsFromState();
+          refreshPlayerSelect();
+          updateStats();
+          updateBadges();
+          renderItem(getNextItem());
+        });
+      }
+
+      if(playerDeleteBtn){
+        playerDeleteBtn.addEventListener("click", function(){
+          if(!activePlayerId || !players[activePlayerId]) return;
+          if(Object.keys(players).length === 1){
+            alert("You need at least one player profile.");
+            return;
+          }
+          if(!confirm("Delete player '" + (players[activePlayerId].name || "player") + "' and their progress?")) return;
+
+          delete players[activePlayerId];
+          var remainingIds = Object.keys(players);
+          activePlayerId = remainingIds[0];
+          var active = players[activePlayerId];
+          state = Object.assign(makeEmptyState(), active.state || {});
+          if(!state.errorWeakness) state.errorWeakness = {};
+          refreshPlayerSelect();
+          syncSelectorsFromState();
+          updateStats();
+          updateBadges();
+          renderItem(getNextItem());
+        });
+      }
+
+      // -----------------------------
+      // Study panel logic
+      // -----------------------------
+      function refreshCustomList(){
+        if(!els.customList) return;
+        els.customList.innerHTML = "";
+
+        customItems = loadCustomItems();
+        if(customItems.length === 0){
+          var opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "No custom items yet.";
+          els.customList.appendChild(opt);
+          els.customList.disabled = true;
+          return;
+        }
+
+        els.customList.disabled = false;
+
+        customItems.forEach(function(ci, idx){
+          var opt = document.createElement("option");
+          opt.value = ci.id;
+          var label = (ci.prompt || "Custom item").slice(0, 60);
+          opt.textContent = (idx+1) + ") " + label;
+          els.customList.appendChild(opt);
+        });
+      }
+
+      function buildCustomItem(){
+        var problem = safeText(els.customProblem ? els.customProblem.value : "").trim();
+        var work = safeText(els.customWork ? els.customWork.value : "").trim();
+        var fix = safeText(els.customFix ? els.customFix.value : "").trim();
+
+        if(!problem || !work || !fix){
+          return { ok:false, message:"Please fill in Problem, Student work, and Clean fix." };
+        }
+
+        var gb = state.gradeBand || (els.grade ? els.grade.value : "6-8");
+        var tr = state.track || (els.track ? els.track.value : "operations");
+        var errType = els.customErrorType ? els.customErrorType.value : "custom";
+        var diff = els.customDifficulty ? els.customDifficulty.value : "medium";
+
+        // Simple distractors (editable later by adding more advanced UI if desired)
+        var distractors = [
+          "They made a sign/operation mistake (check the first wrong step).",
+          "They used a rule that does not apply in this situation.",
+          "They mixed steps from two different methods."
+        ];
+
+        var options = [
+          fix,
+          distractors[0],
+          distractors[1],
+          distractors[2]
+        ];
+
+        var item = {
+          id: "custom-" + Date.now(),
+          gradeBand: gb,
+          track: tr,
+          difficulty: diff,
+          errorType: errType,
+          inattention: false,
+          prompt: "Custom study: " + problem,
+          work: "Student work (incorrect): " + work,
+          options: options,
+          correctIndex: 0,
+          hint: "Read the fix and compare it to the student’s first wrong step.",
+          insight: fix
+        };
+
+        return { ok:true, item:item };
+      }
+
+      function addCustomItem(item){
+        customItems = loadCustomItems();
+        customItems.unshift(item);
+        if(!saveCustomItems(customItems)){
+          return { ok:false, message:"Could not save (storage unavailable). Try another browser or disable private mode." };
+        }
+        ITEMS.push(item); // available immediately
+        return { ok:true };
+      }
+
+      function practiceItemNow(item){
+        if(!item) return;
+        if(nextTimer){ clearTimeout(nextTimer); nextTimer=null; }
+        renderItem({ item:item, fromMissed:false });
+      }
+
+      function getSelectedCustomItem(){
+        if(!els.customList || !customItems || customItems.length === 0) return null;
+        var id = els.customList.value;
+        if(!id) return null;
+        for(var i=0;i<customItems.length;i++){
+          if(customItems[i].id === id) return customItems[i];
+        }
+        return null;
+      }
+
+      if(els.customAdd){
+        els.customAdd.addEventListener("click", function(){
+          var built = buildCustomItem();
+          if(!built.ok){
+            if(els.customStatus) els.customStatus.textContent = built.message;
+            return;
+          }
+          var res = addCustomItem(built.item);
+          if(!res.ok){
+            if(els.customStatus) els.customStatus.textContent = res.message;
+            return;
+          }
+          if(els.customStatus) els.customStatus.textContent = "Saved! Added to practice for " + (built.item.gradeBand) + " • " + (built.item.track) + ".";
+          refreshCustomList();
+        });
+      }
+
+      if(els.customPracticeNow){
+        els.customPracticeNow.addEventListener("click", function(){
+          var built = buildCustomItem();
+          if(!built.ok){
+            if(els.customStatus) els.customStatus.textContent = built.message;
+            return;
+          }
+          // Practice without saving
+          if(els.customStatus) els.customStatus.textContent = "Practicing this custom problem now (not saved).";
+          practiceItemNow(built.item);
+        });
+      }
+
+      if(els.customClear){
+        els.customClear.addEventListener("click", function(){
+          if(els.customProblem) els.customProblem.value = "";
+          if(els.customWork) els.customWork.value = "";
+          if(els.customFix) els.customFix.value = "";
+          if(els.customStatus) els.customStatus.textContent = "Cleared.";
+        });
+      }
+
+      if(els.customUse){
+        els.customUse.addEventListener("click", function(){
+          var item = getSelectedCustomItem();
+          if(!item){
+            if(els.customStatus) els.customStatus.textContent = "No saved custom item selected.";
+            return;
+          }
+          if(els.customStatus) els.customStatus.textContent = "Practicing saved custom item now.";
+          practiceItemNow(item);
+        });
+      }
+
+      if(els.customDelete){
+        els.customDelete.addEventListener("click", function(){
+          var item = getSelectedCustomItem();
+          if(!item){
+            if(els.customStatus) els.customStatus.textContent = "No saved custom item selected.";
+            return;
+          }
+          if(!confirm("Delete this saved custom item?")) return;
+
+          customItems = loadCustomItems().filter(function(ci){ return ci.id !== item.id; });
+          saveCustomItems(customItems);
+
+          // also remove from ITEMS in memory (best effort)
+          ITEMS = ITEMS.filter(function(it){ return it.id !== item.id; });
+
+          if(els.customStatus) els.customStatus.textContent = "Deleted.";
+          refreshCustomList();
+        });
+      }
+
+      // Initial render
+      loadPlayers();
+      refreshPlayerSelect();
+      syncSelectorsFromState();
+      applyVisualToggles();
+      updateStats();
+      updateBadges();
+      updateScoreboard();
+      refreshCustomList();
+      renderItem(getNextItem());
+    });
+  </script>
+
+  <div id="download" style="max-width:900px;margin:24px auto;padding:14px 16px;border:1px solid rgba(148,163,184,.22);border-radius:16px;background:rgba(15,23,42,.7);">
+    <div style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;font-size:12px;margin-bottom:6px;">
+      Download
+    </div>
+    <div style="color:#e5e7eb;font-size:14px;margin-bottom:6px;">
+      BeTheMath is currently available as a web app. You can use it anytime from this page.
+    </div>
+    <div style="color:#9ca3af;font-size:12px;line-height:1.5;">
+      We’re preparing an offline installable version and a one-time purchase option. Nothing is collected or tracked; progress stays on your device.
+    </div>
+  </div>
+
+</body>
+</html>
