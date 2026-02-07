@@ -447,17 +447,21 @@
           </div>
         </div>
 
-        <!-- NEW: Study a Specific Problem -->
+        <!-- Study a Specific Problem -->
         <div class="mq-panel">
           <div class="mq-panel-title">Study a Specific Problem</div>
           <div class="mq-panel-sub">
-            Paste a problem + the incorrect work. Choose the likely mistake type and BeTheMath will generate a study item.
+            Paste a problem + the incorrect work. The app will try to detect the mistake type automatically (you can override it).
             Saved items stay only on this device.
           </div>
 
           <div class="mq-field">
-            <span class="mq-label">Mistake Type</span>
-            <select id="mq-mistake-type"></select>
+            <span class="mq-label">Mistake Type (auto-detected)</span>
+            <div class="mq-custom-row">
+              <select id="mq-mistake-type" style="flex:1;min-width:160px;"></select>
+              <button id="mq-detect" type="button" class="mq-mini-btn">Auto-detect</button>
+            </div>
+            <div class="mq-footer-note" id="mq-detect-status">Auto-detect ready.</div>
           </div>
 
           <div class="mq-field">
@@ -594,7 +598,7 @@
               <li>Use 5–10 minutes as a warm-up (same band + track).</li>
               <li>Ask: “What mistaken idea caused this?” then “What’s the clean fix?”</li>
               <li>If a learner misses an item, read the hint together before the next one.</li>
-              <li>Rotate tracks: Operations (procedure) → Reasoning (concept) → Logic &amp; Patterns (thinking).</li>
+              <li>Rotate tracks: Operations → Reasoning → Logic &amp; Patterns.</li>
             </ul>
           </div>
         </div>
@@ -608,282 +612,109 @@
       // Content: Items (errors + fixes)
       // -----------------------------
       var ITEMS = [
-        // ---------------- K–2 OPERATIONS ----------------
-        {
-          id:"k2-op-1", gradeBand:"K-2", track:"operations", difficulty:"easy",
-          errorType:"digit-append", inattention:false,
-          prompt:"A student writes 7 + 5 = 75. What went wrong?",
-          work:"Student work: 7 + 5 = 75",
-          options:[
-            "They stuck the digits together instead of adding. 7 + 5 is 12.",
-            "They subtracted 5 from 7.",
-            "They multiplied 7 × 5.",
-            "They turned 5 into 50."
-          ],
-          correctIndex:0,
-          hint:"First ask: what is 7 + 5 really equal to?",
+        { id:"k2-op-1", gradeBand:"K-2", track:"operations", difficulty:"easy", errorType:"digit-append", inattention:false,
+          prompt:"A student writes 7 + 5 = 75. What went wrong?", work:"Student work: 7 + 5 = 75",
+          options:["They stuck the digits together instead of adding. 7 + 5 is 12.","They subtracted 5 from 7.","They multiplied 7 × 5.","They turned 5 into 50."],
+          correctIndex:0, hint:"First ask: what is 7 + 5 really equal to?",
           insight:"Misconception: “addition means stick digits together.” Principle: addition combines quantities. Correct idea: 7 + 5 = 12."
         },
-        {
-          id:"k2-op-2", gradeBand:"K-2", track:"operations", difficulty:"easy",
-          errorType:"extra-zero", inattention:true,
-          prompt:"A student computes 10 − 7 = 3, but writes 30 as the answer.",
-          work:"Student work: 10 − 7 = 30",
-          options:[
-            "They added a zero after getting 3, making it ten times too large.",
-            "They subtracted in the wrong order.",
-            "They thought 3 and 30 mean the same amount.",
-            "They added 7 instead of subtracting."
-          ],
-          correctIndex:0,
-          hint:"Is 30 close to 10, or much bigger than 10?",
+        { id:"k2-op-2", gradeBand:"K-2", track:"operations", difficulty:"easy", errorType:"extra-zero", inattention:true,
+          prompt:"A student computes 10 − 7 = 3, but writes 30 as the answer.", work:"Student work: 10 − 7 = 30",
+          options:["They added a zero after getting 3, making it ten times too large.","They subtracted in the wrong order.","They thought 3 and 30 mean the same amount.","They added 7 instead of subtracting."],
+          correctIndex:0, hint:"Is 30 close to 10, or much bigger than 10?",
           insight:"Misconception: “add a zero to look right.” Principle: a zero changes place value. Correct idea: 10 − 7 = 3 (not 30)."
         },
-
-        // ---------------- K–2 REASONING ----------------
-        {
-          id:"k2-re-1", gradeBand:"K-2", track:"reasoning", difficulty:"easy",
-          errorType:"place-value-language", inattention:false,
-          prompt:"A student says 15 is 'one ten and five ones', then writes 105.",
-          work:"Student work: 15 = 105",
-          options:[
-            "They confused place-value meaning with writing extra digits. 15 already means 1 ten and 5 ones.",
-            "They subtracted 10 from 105.",
-            "They thought 15 has one hundred and five ones.",
-            "They forgot to add 10 + 5."
-          ],
-          correctIndex:0,
-          hint:"How do we normally write one ten and five ones?",
+        { id:"k2-re-1", gradeBand:"K-2", track:"reasoning", difficulty:"easy", errorType:"place-value-language", inattention:false,
+          prompt:"A student says 15 is 'one ten and five ones', then writes 105.", work:"Student work: 15 = 105",
+          options:["They confused place-value meaning with writing extra digits. 15 already means 1 ten and 5 ones.","They subtracted 10 from 105.","They thought 15 has one hundred and five ones.","They forgot to add 10 + 5."],
+          correctIndex:0, hint:"How do we normally write one ten and five ones?",
           insight:"Misconception: “show tens/ones by writing 1,0,5.” Principle: place value is built into the digits. Correct number is 15."
         },
-
-        // ---------------- K–2 LOGIC ----------------
-        {
-          id:"k2-lo-1", gradeBand:"K-2", track:"logic", difficulty:"easy",
-          errorType:"pattern-next", inattention:false,
-          prompt:"Pattern: 2, 4, 6, 8, ___. What comes next?",
-          work:"Student idea: 'It goes 2,4,6,8... maybe 9?'",
-          options:[
-            "10, because the pattern adds 2 each time (even numbers).",
-            "9, because 9 comes after 8.",
-            "12, because you double 6.",
-            "8, because it repeats 8."
-          ],
-          correctIndex:0,
-          hint:"Look at the change between numbers: +2 each time.",
+        { id:"k2-lo-1", gradeBand:"K-2", track:"logic", difficulty:"easy", errorType:"pattern-next", inattention:false,
+          prompt:"Pattern: 2, 4, 6, 8, ___. What comes next?", work:"Student idea: 'It goes 2,4,6,8... maybe 9?'",
+          options:["10, because the pattern adds 2 each time (even numbers).","9, because 9 comes after 8.","12, because you double 6.","8, because it repeats 8."],
+          correctIndex:0, hint:"Look at the change between numbers: +2 each time.",
           insight:"Misconception: “just pick the next counting number.” Principle: patterns use a rule. Correct continuation: 10."
         },
-
-        // ---------------- 3–5 OPERATIONS ----------------
-        {
-          id:"35-op-1", gradeBand:"3-5", track:"operations", difficulty:"medium",
-          errorType:"carry-borrow", inattention:false,
-          prompt:"A student solves 27 + 38 and writes 55.",
-          work:"Student work: 27 + 38 = 55",
-          options:[
-            "They added tens but didn’t regroup from 7 + 8 = 15. The correct sum is 65.",
-            "They subtracted 27 from 38.",
-            "They multiplied digits instead of adding.",
-            "They rounded and forgot to adjust."
-          ],
-          correctIndex:0,
-          hint:"Add ones first: 7 + 8 = 15. What happens to the 1?",
+        { id:"35-op-1", gradeBand:"3-5", track:"operations", difficulty:"medium", errorType:"carry-borrow", inattention:false,
+          prompt:"A student solves 27 + 38 and writes 55.", work:"Student work: 27 + 38 = 55",
+          options:["They added tens but didn’t regroup from 7 + 8 = 15. The correct sum is 65.","They subtracted 27 from 38.","They multiplied digits instead of adding.","They rounded and forgot to adjust."],
+          correctIndex:0, hint:"Add ones first: 7 + 8 = 15. What happens to the 1?",
           insight:"Misconception: “ignore the regrouping.” Principle: place value requires regrouping. Correct idea: carry/regroup when ones ≥ 10."
         },
-
-        // ---------------- 3–5 REASONING ----------------
-        {
-          id:"35-re-1", gradeBand:"3-5", track:"reasoning", difficulty:"medium",
-          errorType:"percent-decimal", inattention:false,
-          prompt:"A student says 0.5 is the same as 5%.",
-          work:"Student idea: 0.5 = 5%",
-          options:[
-            "They forgot 0.5 means 50%. Five percent is 0.05.",
-            "They added 50 instead of 5.",
-            "They confused numerator/denominator.",
-            "They mixed up multiplication and division."
-          ],
-          correctIndex:0,
-          hint:"One-half of something is close to 50%, not 5%.",
+        { id:"35-re-1", gradeBand:"3-5", track:"reasoning", difficulty:"medium", errorType:"percent-decimal", inattention:false,
+          prompt:"A student says 0.5 is the same as 5%.", work:"Student idea: 0.5 = 5%",
+          options:["They forgot 0.5 means 50%. Five percent is 0.05.","They added 50 instead of 5.","They confused numerator/denominator.","They mixed up multiplication and division."],
+          correctIndex:0, hint:"One-half of something is close to 50%, not 5%.",
           insight:"Misconception: “percent sign is just a label.” Principle: percent means ‘out of 100.’ 0.5 = 50%, while 5% = 0.05."
         },
-
-        // ---------------- 3–5 LOGIC ----------------
-        {
-          id:"35-lo-1", gradeBand:"3-5", track:"logic", difficulty:"medium",
-          errorType:"odd-one-out", inattention:false,
-          prompt:"Which one does NOT belong: square, triangle, rectangle, circle?",
-          work:"Student thought: 'rectangle doesn't belong because it is long.'",
-          options:[
-            "Circle, because it has no straight sides (the others do).",
-            "Rectangle, because it is long.",
-            "Triangle, because it has 3 sides.",
-            "Square, because it has equal sides."
-          ],
-          correctIndex:0,
-          hint:"Look for a rule that separates one from all the others.",
+        { id:"35-lo-1", gradeBand:"3-5", track:"logic", difficulty:"medium", errorType:"odd-one-out", inattention:false,
+          prompt:"Which one does NOT belong: square, triangle, rectangle, circle?", work:"Student thought: 'rectangle doesn't belong because it is long.'",
+          options:["Circle, because it has no straight sides (the others do).","Rectangle, because it is long.","Triangle, because it has 3 sides.","Square, because it has equal sides."],
+          correctIndex:0, hint:"Look for a rule that separates one from all the others.",
           insight:"Misconception: “choose based on appearance.” Principle: use a defining property. Circle is the only one without straight sides."
         },
-
-        // ---------------- 6–8 OPERATIONS ----------------
-        {
-          id:"68-op-1", gradeBand:"6-8", track:"operations", difficulty:"medium",
-          errorType:"fraction-addition", inattention:false,
-          prompt:"A student adds fractions and gets 1/4 + 1/2 = 2/6.",
-          work:"Student work: 1/4 + 1/2 = 2/6",
-          options:[
-            "They added numerators and denominators straight across. Use a common denominator: 1/4 + 2/4 = 3/4.",
-            "They multiplied instead of adding.",
-            "They subtracted one fraction from the other.",
-            "They simplified using the wrong numbers."
-          ],
-          correctIndex:0,
-          hint:"Rewrite both fractions with the same denominator.",
+        { id:"68-op-1", gradeBand:"6-8", track:"operations", difficulty:"medium", errorType:"fraction-addition", inattention:false,
+          prompt:"A student adds fractions and gets 1/4 + 1/2 = 2/6.", work:"Student work: 1/4 + 1/2 = 2/6",
+          options:["They added numerators and denominators straight across. Use a common denominator: 1/4 + 2/4 = 3/4.","They multiplied instead of adding.","They subtracted one fraction from the other.","They simplified using the wrong numbers."],
+          correctIndex:0, hint:"Rewrite both fractions with the same denominator.",
           insight:"Misconception: “add across.” Principle: fraction addition needs a common unit. Correct idea: use a common denominator."
         },
-        {
-          id:"68-op-2", gradeBand:"6-8", track:"operations", difficulty:"medium",
-          errorType:"integer-sign", inattention:true,
-          prompt:"A student computes −8 + 5 and writes −13.",
-          work:"Student work: −8 + 5 = −13",
-          options:[
-            "They treated both numbers as negative. Correct idea: compare absolute values; the result is −3.",
-            "They subtracted 5 from 8 but lost the sign.",
-            "They multiplied −8 by 5.",
-            "They changed −8 into +8."
-          ],
-          correctIndex:0,
-          hint:"Which absolute value is bigger: 8 or 5?",
+        { id:"68-op-2", gradeBand:"6-8", track:"operations", difficulty:"medium", errorType:"integer-sign", inattention:true,
+          prompt:"A student computes −8 + 5 and writes −13.", work:"Student work: −8 + 5 = −13",
+          options:["They treated both numbers as negative. Correct idea: compare absolute values; the result is −3.","They subtracted 5 from 8 but lost the sign.","They multiplied −8 by 5.","They changed −8 into +8."],
+          correctIndex:0, hint:"Which absolute value is bigger: 8 or 5?",
           insight:"Misconception: “keep the minus and add.” Principle: compare absolute values. Correct idea: −8 + 5 = −3."
         },
-        {
-          id:"68-op-3", gradeBand:"6-8", track:"operations", difficulty:"medium",
-          errorType:"distribution", inattention:false,
-          prompt:"A student simplifies 3(x − 4) and writes 3x − 4.",
-          work:"Student work: 3(x − 4) = 3x − 4",
-          options:[
-            "They forgot to multiply 3 by −4. Correct idea: distribute to every term inside parentheses.",
-            "They subtracted 4 from 3x incorrectly.",
-            "They added 4 to both sides.",
-            "They distributed the wrong number."
-          ],
-          correctIndex:0,
-          hint:"Distribution must touch every term inside the parentheses.",
+        { id:"68-op-3", gradeBand:"6-8", track:"operations", difficulty:"medium", errorType:"distribution", inattention:false,
+          prompt:"A student simplifies 3(x − 4) and writes 3x − 4.", work:"Student work: 3(x − 4) = 3x − 4",
+          options:["They forgot to multiply 3 by −4. Correct idea: distribute to every term inside parentheses.","They subtracted 4 from 3x incorrectly.","They added 4 to both sides.","They distributed the wrong number."],
+          correctIndex:0, hint:"Distribution must touch every term inside the parentheses.",
           insight:"Misconception: “distribute only to x.” Principle: multiply each term. Correct idea: distribute to both terms."
         },
-
-        // ---------------- 6–8 REASONING ----------------
-        {
-          id:"68-re-1", gradeBand:"6-8", track:"reasoning", difficulty:"medium",
-          errorType:"square-negative", inattention:false,
-          prompt:"A student says (−3)² = −9 because 'the answer stays negative'.",
-          work:"Student work: (−3)² = −9",
-          options:[
-            "They forgot squaring means multiply by itself: (−3)(−3)=+9.",
-            "They multiplied 3×2.",
-            "They squared only the negative sign.",
-            "They changed the sign twice."
-          ],
-          correctIndex:0,
-          hint:"Write it as (−3) × (−3). What sign do you get?",
+        { id:"68-re-1", gradeBand:"6-8", track:"reasoning", difficulty:"medium", errorType:"square-negative", inattention:false,
+          prompt:"A student says (−3)² = −9 because 'the answer stays negative'.", work:"Student work: (−3)² = −9",
+          options:["They forgot squaring means multiply by itself: (−3)(−3)=+9.","They multiplied 3×2.","They squared only the negative sign.","They changed the sign twice."],
+          correctIndex:0, hint:"Write it as (−3) × (−3). What sign do you get?",
           insight:"Misconception: “negative stays negative.” Principle: negative×negative=positive. Correct idea: (−3)²=9."
         },
-        {
-          id:"68-re-2", gradeBand:"6-8", track:"reasoning", difficulty:"hard",
-          errorType:"proportion", inattention:false,
+        { id:"68-re-2", gradeBand:"6-8", track:"reasoning", difficulty:"hard", errorType:"proportion", inattention:false,
           prompt:"In y = kx (a proportional relationship), a student says doubling x makes y stay the same.",
           work:"Student statement: 'y doesn’t change when x doubles.'",
-          options:[
-            "They confused proportional relationships with constant (flat) relationships. In y=kx, doubling x doubles y.",
-            "They confused 'double' with 'divide by 2'.",
-            "They think only the ratio matters, not values.",
-            "They mixed up x and y."
-          ],
-          correctIndex:0,
-          hint:"If y = kx and x becomes 2x, what happens to y?",
+          options:["They confused proportional relationships with constant (flat) relationships. In y=kx, doubling x doubles y.","They confused 'double' with 'divide by 2'.","They think only the ratio matters, not values.","They mixed up x and y."],
+          correctIndex:0, hint:"If y = kx and x becomes 2x, what happens to y?",
           insight:"Misconception: “y is independent.” Principle: in y=kx, y scales with x. Correct idea: doubling x doubles y."
         },
-
-        // ---------------- 6–8 LOGIC ----------------
-        {
-          id:"68-lo-1", gradeBand:"6-8", track:"logic", difficulty:"medium",
-          errorType:"pattern-rule", inattention:false,
-          prompt:"Pattern: 3, 6, 12, 24, ___. What comes next?",
-          work:"Student guess: 'Maybe add 6 to get 30?'",
-          options:[
-            "48, because the pattern multiplies by 2 each time.",
-            "30, because you add 6.",
-            "36, because 12+24=36.",
-            "27, because 24 is close to 27."
-          ],
-          correctIndex:0,
-          hint:"Look at the ratio between terms: each is doubled.",
+        { id:"68-lo-1", gradeBand:"6-8", track:"logic", difficulty:"medium", errorType:"pattern-rule", inattention:false,
+          prompt:"Pattern: 3, 6, 12, 24, ___. What comes next?", work:"Student guess: 'Maybe add 6 to get 30?'",
+          options:["48, because the pattern multiplies by 2 each time.","30, because you add 6.","36, because 12+24=36.","27, because 24 is close to 27."],
+          correctIndex:0, hint:"Look at the ratio between terms: each is doubled.",
           insight:"Misconception: “use addition when you see growing numbers.” Principle: check a consistent rule. Correct continuation: 48."
         },
-        {
-          id:"68-lo-2", gradeBand:"6-8", track:"logic", difficulty:"hard",
-          errorType:"if-then", inattention:false,
+        { id:"68-lo-2", gradeBand:"6-8", track:"logic", difficulty:"hard", errorType:"if-then", inattention:false,
           prompt:"Logic: If ALL squares are rectangles, and shape A is a square, what must be true?",
           work:"Student thought: 'A might be a rectangle, but not sure.'",
-          options:[
-            "A must be a rectangle, because every square is a rectangle.",
-            "A cannot be a rectangle, because rectangles are different.",
-            "A might be a triangle.",
-            "Nothing can be concluded."
-          ],
-          correctIndex:0,
-          hint:"All squares belong inside the category ‘rectangles.’",
+          options:["A must be a rectangle, because every square is a rectangle.","A cannot be a rectangle, because rectangles are different.","A might be a triangle.","Nothing can be concluded."],
+          correctIndex:0, hint:"All squares belong inside the category ‘rectangles.’",
           insight:"Misconception: “categories don’t nest.” Principle: subset ⇒ larger set. Square ⇒ Rectangle."
         },
-
-        // ---------------- Algebra I OPERATIONS ----------------
-        {
-          id:"alg1-op-1", gradeBand:"Alg1", track:"operations", difficulty:"medium",
-          errorType:"distribution", inattention:false,
-          prompt:"A student expands 2(x + 3) as 2x + 3.",
-          work:"Student work: 2(x + 3) = 2x + 3",
-          options:[
-            "They distributed 2 to x but forgot 2·3. Correct idea: distribute to every term.",
-            "They subtracted 3.",
-            "They divided by 2.",
-            "They turned x into x²."
-          ],
-          correctIndex:0,
-          hint:"How many terms are inside the parentheses?",
+        { id:"alg1-op-1", gradeBand:"Alg1", track:"operations", difficulty:"medium", errorType:"distribution", inattention:false,
+          prompt:"A student expands 2(x + 3) as 2x + 3.", work:"Student work: 2(x + 3) = 2x + 3",
+          options:["They distributed 2 to x but forgot 2·3. Correct idea: distribute to every term.","They subtracted 3.","They divided by 2.","They turned x into x²."],
+          correctIndex:0, hint:"How many terms are inside the parentheses?",
           insight:"Misconception: “multiply only the variable.” Principle: distribute to every term. Correct idea: distribute fully."
         },
-
-        // ---------------- Geometry REASONING ----------------
-        {
-          id:"geo-re-1", gradeBand:"Geo", track:"reasoning", difficulty:"medium",
-          errorType:"triangle-angle-sum", inattention:false,
-          prompt:"A student says triangle angles add to 200° because '100+50+50=200'.",
-          work:"Student work: angle sum = 200°",
-          options:[
-            "They ignored the rule that triangle angles must total 180°, so those angles can’t form a triangle.",
-            "They mixed up degrees and radians.",
-            "They doubled an angle.",
-            "They used a quadrilateral rule."
-          ],
-          correctIndex:0,
-          hint:"What is the angle sum rule for any triangle?",
+        { id:"geo-re-1", gradeBand:"Geo", track:"reasoning", difficulty:"medium", errorType:"triangle-angle-sum", inattention:false,
+          prompt:"A student says triangle angles add to 200° because '100+50+50=200'.", work:"Student work: angle sum = 200°",
+          options:["They ignored the rule that triangle angles must total 180°, so those angles can’t form a triangle.","They mixed up degrees and radians.","They doubled an angle.","They used a quadrilateral rule."],
+          correctIndex:0, hint:"What is the angle sum rule for any triangle?",
           insight:"Misconception: “my addition decides the rule.” Principle: triangle sum is always 180°. Therefore 100°,50°,50° is impossible."
         },
-
-        // ---------------- Trigonometry REASONING ----------------
-        {
-          id:"trig-re-1", gradeBand:"Trig", track:"reasoning", difficulty:"hard",
-          errorType:"unit-circle", inattention:true,
+        { id:"trig-re-1", gradeBand:"Trig", track:"reasoning", difficulty:"hard", errorType:"unit-circle", inattention:true,
           prompt:"A student evaluates sin(π) and writes 1 because 'π is 180°, the top of the circle.'",
           work:"Student work: sin(π) = 1",
-          options:[
-            "They confused π/2 with π. On the unit circle, π is at (−1, 0), so sin(π)=0.",
-            "They used cosine instead of sine.",
-            "They think sine is always 1 at special angles.",
-            "They mixed radians and degrees completely."
-          ],
-          correctIndex:0,
-          hint:"At π (180°), what is the y-coordinate on the unit circle?",
+          options:["They confused π/2 with π. On the unit circle, π is at (−1, 0), so sin(π)=0.","They used cosine instead of sine.","They think sine is always 1 at special angles.","They mixed radians and degrees completely."],
+          correctIndex:0, hint:"At π (180°), what is the y-coordinate on the unit circle?",
           insight:"Misconception: “π is the top.” Principle: sin is the y-coordinate. At π, point is (−1,0) so sin(π)=0."
         }
       ];
@@ -902,24 +733,18 @@
         if(!raw) return [];
         var parsed = safeJSONParse(raw);
         if(!Array.isArray(parsed)) return [];
-        // basic sanity
         return parsed.filter(function(it){
           return it && typeof it === "object" && it.id && it.prompt && it.work && Array.isArray(it.options);
         });
       }
       function saveCustomItems(){
-        try{
-          localStorage.setItem(CUSTOM_KEY, JSON.stringify(customItems));
-        }catch(e){}
+        try{ localStorage.setItem(CUSTOM_KEY, JSON.stringify(customItems)); }catch(e){}
       }
       customItems = loadCustomItems();
 
       // Templates for “Study a Specific Problem”
       var MISTAKE_TEMPLATES = [
-        {
-          key:"generic",
-          label:"Generic: What went wrong?",
-          errorType:"custom-generic",
+        { key:"generic", label:"Generic: What went wrong?", errorType:"custom-generic",
           build:function(){
             return {
               options:[
@@ -934,10 +759,7 @@
             };
           }
         },
-        {
-          key:"fraction-add",
-          label:"Fractions: added denominators/numerators across",
-          errorType:"fraction-addition",
+        { key:"fraction-add", label:"Fractions: added denominators/numerators across", errorType:"fraction-addition",
           build:function(){
             return {
               options:[
@@ -952,10 +774,7 @@
             };
           }
         },
-        {
-          key:"distribute",
-          label:"Distributive property: multiplied only one term",
-          errorType:"distribution",
+        { key:"distribute", label:"Distributive property: multiplied only one term", errorType:"distribution",
           build:function(){
             return {
               options:[
@@ -970,10 +789,7 @@
             };
           }
         },
-        {
-          key:"integers-sign",
-          label:"Integers: kept the minus and added",
-          errorType:"integer-sign",
+        { key:"integers-sign", label:"Integers: kept the minus and added", errorType:"integer-sign",
           build:function(){
             return {
               options:[
@@ -988,10 +804,7 @@
             };
           }
         },
-        {
-          key:"square-negative",
-          label:"Exponents: (−a)² treated as negative",
-          errorType:"square-negative",
+        { key:"square-negative", label:"Exponents: (−a)² treated as negative", errorType:"square-negative",
           build:function(){
             return {
               options:[
@@ -1006,10 +819,7 @@
             };
           }
         },
-        {
-          key:"carry",
-          label:"Multi-digit addition: forgot to regroup/carry",
-          errorType:"carry-borrow",
+        { key:"carry", label:"Multi-digit addition: forgot to regroup/carry", errorType:"carry-borrow",
           build:function(){
             return {
               options:[
@@ -1024,10 +834,7 @@
             };
           }
         },
-        {
-          key:"triangle-sum",
-          label:"Geometry: triangle angle sum wrong",
-          errorType:"triangle-angle-sum",
+        { key:"triangle-sum", label:"Geometry: triangle angle sum wrong", errorType:"triangle-angle-sum",
           build:function(){
             return {
               options:[
@@ -1042,10 +849,7 @@
             };
           }
         },
-        {
-          key:"unit-circle",
-          label:"Trig: unit circle special angle mix-up",
-          errorType:"unit-circle",
+        { key:"unit-circle", label:"Trig: unit circle special angle mix-up", errorType:"unit-circle",
           build:function(){
             return {
               options:[
@@ -1068,14 +872,14 @@
       function makeEmptyState(){
         return {
           xp:0, coins:0, streak:0, played:0,
-          gradeBand:"6-8",        // ✅ default start at 6–8
-          track:"operations",     // default track
+          gradeBand:"6-8",        // default start at 6–8
+          track:"operations",
           missed:[],
           errorWeakness:{}
         };
       }
 
-      var STORAGE_KEYS = ["bethemath_players_v1","mathquest_players_v1"]; // try new, then old
+      var STORAGE_KEYS = ["bethemath_players_v1","mathquest_players_v1"];
       var SAVE_KEY = STORAGE_KEYS[0];
 
       function isInattentionItem(item){ return !!(item && item.inattention); }
@@ -1112,6 +916,8 @@
 
         // Custom study UI
         mistakeType:$("mq-mistake-type"),
+        detectBtn:$("mq-detect"),
+        detectStatus:$("mq-detect-status"),
         customPrompt:$("mq-custom-prompt"),
         customWork:$("mq-custom-work"),
         customStudyBtn:$("mq-custom-study"),
@@ -1226,19 +1032,13 @@
           var tr = state.track === "logic" ? "Logic & Patterns" : (state.track === "reasoning" ? "Reasoning" : "Operations");
           els.miniFocus.textContent = gb + " • " + tr;
         }
-        if(els.miniType){
-          els.miniType.textContent = "Focus: common errors & clean fixes";
-        }
+        if(els.miniType) els.miniType.textContent = "Focus: common errors & clean fixes";
       }
 
       function updateScoreboard(){
         if(!els.scoreboard) return;
-
         var ids = Object.keys(players);
-        if(ids.length === 0){
-          els.scoreboard.textContent = "No players yet.";
-          return;
-        }
+        if(ids.length === 0){ els.scoreboard.textContent = "No players yet."; return; }
 
         var summary = ids.map(function(id){
           var p = players[id];
@@ -1252,7 +1052,6 @@
           return a.name.localeCompare(b.name);
         });
 
-        // safe DOM build
         var ol = document.createElement("ol");
         ol.style.paddingLeft = "18px";
         ol.style.margin = "0";
@@ -1314,23 +1113,17 @@
 
       function pickDifficultyFromPool(pool){
         if(!pool || pool.length === 0) return null;
-
         var present = { easy:false, medium:false, hard:false };
-        pool.forEach(function(item){
-          if(item.difficulty && present.hasOwnProperty(item.difficulty)) present[item.difficulty] = true;
-        });
+        pool.forEach(function(item){ if(item.difficulty && present.hasOwnProperty(item.difficulty)) present[item.difficulty] = true; });
 
         var streak = state.streak || 0;
         var weights = { easy:0, medium:0, hard:0 };
-
         if(streak <= 1){ weights.easy=.7; weights.medium=.25; weights.hard=.05; }
         else if(streak <= 4){ weights.easy=.4; weights.medium=.4; weights.hard=.2; }
         else { weights.easy=.2; weights.medium=.4; weights.hard=.4; }
 
         var available = [];
-        ["easy","medium","hard"].forEach(function(d){
-          if(present[d] && weights[d] > 0) available.push({ difficulty:d, weight:weights[d] });
-        });
+        ["easy","medium","hard"].forEach(function(d){ if(present[d] && weights[d] > 0) available.push({ difficulty:d, weight:weights[d] }); });
 
         if(available.length === 0){
           var fallback = [];
@@ -1402,15 +1195,12 @@
         if(!els.insightLog || !item) return;
         var div = document.createElement("div");
         div.style.marginBottom = "6px";
-
         var label = document.createElement("strong");
         label.textContent = (correct ? "✔️ Insight: " : "🔁 Fix-It insight: ");
         var msg = document.createElement("span");
         msg.textContent = item.insight || "";
-
         div.appendChild(label);
         div.appendChild(msg);
-
         els.insightLog.prepend(div);
       }
 
@@ -1606,7 +1396,6 @@
           return;
         }
 
-        // newest first
         var list = customItems.slice().sort(function(a,b){
           return (b.createdAt || 0) - (a.createdAt || 0);
         });
@@ -1628,7 +1417,6 @@
           studyBtn.className = "mq-mini-btn";
           studyBtn.textContent = "Study";
           studyBtn.addEventListener("click", function(){
-            // jump grade/track to match item so the mini header stays truthful
             state.gradeBand = it.gradeBand || state.gradeBand;
             state.track = it.track || state.track;
             syncSelectorsFromState();
@@ -1680,6 +1468,203 @@
         return MISTAKE_TEMPLATES[0];
       }
 
+      // -----------------------------
+      // NEW: Auto-detect mistake type (local-only heuristics)
+      // -----------------------------
+      function normText(s){
+        return (s||"")
+          .toString()
+          .replace(/\u2212/g, "-")   // minus sign → hyphen
+          .replace(/\s+/g, " ")
+          .trim()
+          .toLowerCase();
+      }
+
+      function parseIntSafe(x){
+        var n = parseInt(x,10);
+        return isNaN(n) ? null : n;
+      }
+
+      function computeSimpleIntExpr(expr){
+        // Supports: -?\d+ (+|-) -?\d+
+        if(!expr) return null;
+        var t = normText(expr).replace(/[^\d+\- ]/g,"").replace(/\s+/g," ").trim();
+        var m = t.match(/^(-?\d+)\s*([+\-])\s*(-?\d+)$/);
+        if(!m) return null;
+        var a = parseIntSafe(m[1]);
+        var op = m[2];
+        var b = parseIntSafe(m[3]);
+        if(a===null || b===null) return null;
+        return op==="+" ? (a+b) : (a-b);
+      }
+
+      function detectFractionAcross(prompt, work){
+        // Detect pattern like a/b + c/d = (a+c)/(b+d)
+        var p = normText(prompt + " " + work);
+        var m = p.match(/(\d+)\s*\/\s*(\d+)\s*\+\s*(\d+)\s*\/\s*(\d+).*?=\s*(\d+)\s*\/\s*(\d+)/);
+        if(!m) return null;
+        var a=parseIntSafe(m[1]), b=parseIntSafe(m[2]), c=parseIntSafe(m[3]), d=parseIntSafe(m[4]);
+        var rn=parseIntSafe(m[5]), rd=parseIntSafe(m[6]);
+        if([a,b,c,d,rn,rd].some(function(x){return x===null;})) return null;
+        if(rn === (a+c) && rd === (b+d)) return true;
+        return null;
+      }
+
+      function detectDistribution(prompt, work){
+        // Detect f(x ± n) and work has fx ± n (constant not multiplied)
+        var p = normText(prompt);
+        var w = normText(work);
+
+        // Find factor and constant inside parentheses
+        // e.g. "3(x - 4)" or "2(x+3)"
+        var m = (p + " " + w).match(/(\d+)\s*\(\s*([a-z])\s*([+\-])\s*(\d+)\s*\)/);
+        if(!m) return null;
+        var f = parseIntSafe(m[1]);
+        var v = m[2];
+        var sign = m[3];
+        var c = parseIntSafe(m[4]);
+        if(f===null || c===null) return null;
+
+        // Look for result "fx ± c" (NOT f*c) in student work
+        // If c appears unchanged after distribution, that's the classic error.
+        var res = (w.match(/=\s*([^\n\r]+)/) || [null, w])[1];
+        if(!res) res = w;
+
+        // Check for "f v" somewhere
+        var hasFv = new RegExp("\\b" + f + "\\s*" + v + "\\b").test(res) || new RegExp("\\b" + f + v + "\\b").test(res);
+
+        // Constant appears as c (not f*c)
+        var expected = f * c;
+        var hasUnmultipliedConst = new RegExp("\\b" + (sign==="-"? "-" : "\\+") + "\\s*" + c + "\\b").test(res)
+          || new RegExp("\\b" + c + "\\b").test(res);
+
+        var hasExpectedConst = new RegExp("\\b" + expected + "\\b").test(res);
+
+        if(hasFv && hasUnmultipliedConst && !hasExpectedConst){
+          return true;
+        }
+        return null;
+      }
+
+      function detectSquareNegative(prompt, work){
+        var t = normText(prompt + " " + work);
+        // (-3)^2 = -9 or (-3)2-ish
+        if(/\(\s*-\d+\s*\)\s*(\^?\s*2|²)\s*=\s*-\d+/.test(t)) return true;
+        if(/\(-\d+\)\s*²\s*=\s*-\d+/.test(t)) return true;
+        return null;
+      }
+
+      function detectIntegerSign(prompt, work){
+        var t = normText(prompt + " " + work);
+        // look for something like "-8 + 5 = -13" and validate it's wrong in the "added negatives" direction
+        var m = t.match(/(-?\d+)\s*([+\-])\s*(-?\d+)\s*=\s*(-?\d+)/);
+        if(!m) return null;
+        var a=parseIntSafe(m[1]), op=m[2], b=parseIntSafe(m[3]), ans=parseIntSafe(m[4]);
+        if([a,b,ans].some(function(x){return x===null;})) return null;
+
+        var actual = (op==="+") ? (a+b) : (a-b);
+        if(actual === ans) return null;
+
+        // If mixed signs and student "adds magnitudes" keeping negative sign, it's a common sign error
+        var mixed = (a<0 && b>0) || (a>0 && b<0);
+        if(!mixed) return null;
+
+        var guess = - (Math.abs(a) + Math.abs(b)); // classic wrong pattern
+        if(ans === guess) return true;
+
+        // Another common: wrong sign overall when |a|>|b|
+        // Heuristic: if |a|>|b| and ans sign matches b instead of a
+        if(Math.abs(a) !== Math.abs(b)){
+          var expectedSign = actual < 0 ? -1 : 1;
+          var ansSign = ans < 0 ? -1 : 1;
+          if(ansSign !== expectedSign) return true;
+        }
+        return null;
+      }
+
+      function detectCarry(prompt, work){
+        var t = normText(prompt + " " + work);
+        var m = t.match(/(\d{2,3})\s*\+\s*(\d{2,3}).*=\s*(\d{2,3})/);
+        if(!m) return null;
+        var a=parseIntSafe(m[1]), b=parseIntSafe(m[2]), ans=parseIntSafe(m[3]);
+        if([a,b,ans].some(function(x){return x===null;})) return null;
+        var actual = a+b;
+        if(ans === actual) return null;
+
+        // "no carry": tens + tens, ones + ones but ignore carry
+        var a1=a%10, b1=b%10, a10=Math.floor(a/10), b10=Math.floor(b/10);
+        var noCarry = (a10+b10)*10 + ((a1+b1)%10);
+        if(ans === noCarry && (a1+b1)>=10) return true;
+        return null;
+      }
+
+      function detectTriangleSum(prompt, work){
+        var t = normText(prompt + " " + work);
+        if(t.indexOf("triangle") === -1) return null;
+        // If mentions 200 or any non-180 sum claim
+        if(/sum\s*=\s*200|add\s*to\s*200|total\s*200/.test(t)) return true;
+        // If three angles listed and sum != 180
+        var nums = (t.match(/\b\d{2,3}\b/g) || []).map(function(x){return parseIntSafe(x);}).filter(function(x){return x!==null;});
+        if(nums.length >= 3){
+          // take first three plausible angles
+          var a=nums[0], b=nums[1], c=nums[2];
+          if(a+b+c !== 180) return true;
+        }
+        return null;
+      }
+
+      function detectUnitCircle(prompt, work){
+        var t = normText(prompt + " " + work);
+        if(t.indexOf("sin(") === -1 && t.indexOf("cos(") === -1) return null;
+        if(t.indexOf("pi") === -1 && t.indexOf("π") === -1) return null;
+        // common: sin(pi)=1, sin(pi)= -1, cos(pi)=1, etc.
+        if(/sin\s*\(\s*(pi|π)\s*\)\s*=\s*1/.test(t)) return true;
+        if(/cos\s*\(\s*(pi|π)\s*\)\s*=\s*1/.test(t)) return true;
+        if(/sin\s*\(\s*(pi|π)\s*\)\s*=\s*-?1/.test(t)) return true;
+        return null;
+      }
+
+      function detectMistakeType(prompt, work){
+        // Ordered by specificity (best first)
+        if(detectFractionAcross(prompt, work)) return { key:"fraction-add", confidence:"High", reason:"Fraction addition across detected." };
+        if(detectDistribution(prompt, work))  return { key:"distribute", confidence:"High", reason:"Distribution pattern detected." };
+        if(detectSquareNegative(prompt, work))return { key:"square-negative", confidence:"High", reason:"Squared negative treated as negative." };
+        if(detectIntegerSign(prompt, work))   return { key:"integers-sign", confidence:"Medium", reason:"Integer sign/mixed-sign pattern detected." };
+        if(detectCarry(prompt, work))         return { key:"carry", confidence:"Medium", reason:"Carry/regroup likely missing." };
+        if(detectTriangleSum(prompt, work))   return { key:"triangle-sum", confidence:"Medium", reason:"Triangle angle sum mismatch." };
+        if(detectUnitCircle(prompt, work))    return { key:"unit-circle", confidence:"Medium", reason:"Unit circle special angle mismatch." };
+
+        // fallback: if text contains hints
+        var t = normText(prompt + " " + work);
+        if(t.indexOf("distribut") !== -1 || t.indexOf("(") !== -1) return { key:"distribute", confidence:"Low", reason:"Parentheses present; distribution might be relevant." };
+        if(t.indexOf("/") !== -1 && t.indexOf("+") !== -1) return { key:"fraction-add", confidence:"Low", reason:"Fractions with addition present." };
+        if(t.indexOf("sin") !== -1 || t.indexOf("cos") !== -1) return { key:"unit-circle", confidence:"Low", reason:"Trig keywords present." };
+        if(t.indexOf("triangle") !== -1) return { key:"triangle-sum", confidence:"Low", reason:"Triangle keywords present." };
+
+        return { key:"generic", confidence:"Low", reason:"No strong pattern found." };
+      }
+
+      function applyAutoDetect(showReason){
+        if(!els.mistakeType) return;
+        var p = (els.customPrompt && els.customPrompt.value) ? els.customPrompt.value : "";
+        var w = (els.customWork && els.customWork.value) ? els.customWork.value : "";
+
+        if(!p.trim() && !w.trim()){
+          if(els.detectStatus) els.detectStatus.textContent = "Auto-detect ready.";
+          return;
+        }
+        var result = detectMistakeType(p, w);
+        if(result && result.key && els.mistakeType){
+          els.mistakeType.value = result.key;
+          if(els.detectStatus){
+            els.detectStatus.textContent = "Auto-detected: " + (getTemplateByKey(result.key).label) + " • Confidence: " + result.confidence + (showReason ? (" • " + result.reason) : "");
+          }
+        }
+      }
+
+      // -----------------------------
+      // Build custom item (uses chosen or auto-detected template)
+      // -----------------------------
       function buildCustomItem(){
         var gb = (els.grade && els.grade.value) ? els.grade.value : (state.gradeBand || "6-8");
         var tr = (els.track && els.track.value) ? els.track.value : (state.track || "operations");
@@ -1703,7 +1688,6 @@
         var insight = "";
         var options = [];
         var correctIndex = 0;
-        var template = getTemplateByKey(templateKey);
 
         function ensureQuestion(p){
           if(/\?/.test(p)) return p;
@@ -1711,7 +1695,6 @@
         }
 
         if(anyAdvanced){
-          // require all four
           if(!(a && b && c && d)){
             if(els.customStatus) els.customStatus.textContent = "Advanced mode: please fill all four choices A–D (or leave all blank).";
             return null;
@@ -1721,6 +1704,7 @@
           hint = ((els.customHint && els.customHint.value) || "").trim() || "Look for the first step that breaks the rule.";
           insight = ((els.customInsight && els.customInsight.value) || "").trim() || "Misconception: a common step-rule mix-up. Principle: follow the rule consistently. Fix: redo from the first wrong step.";
         }else{
+          var template = getTemplateByKey(templateKey);
           var built = template.build(promptText, workText);
           options = built.options;
           correctIndex = built.correctIndex;
@@ -1728,13 +1712,15 @@
           insight = built.insight;
         }
 
-        var item = {
+        var templateForErrorType = getTemplateByKey(templateKey);
+
+        return {
           id: "custom-" + Date.now(),
           createdAt: Date.now(),
           gradeBand: gb,
           track: tr,
           difficulty: "custom",
-          errorType: template.errorType || "custom",
+          errorType: templateForErrorType.errorType || "custom",
           inattention: false,
           prompt: ensureQuestion(promptText),
           work: "Student work (incorrect): " + workText,
@@ -1743,12 +1729,9 @@
           hint: hint,
           insight: insight
         };
-
-        return item;
       }
 
       function saveCustomItem(item){
-        // keep list from exploding: cap at 200
         customItems.push(item);
         if(customItems.length > 200) customItems = customItems.slice(customItems.length - 200);
         saveCustomItems();
@@ -1765,10 +1748,11 @@
         if(els.customHint) els.customHint.value = "";
         if(els.customInsight) els.customInsight.value = "";
         if(els.customStatus) els.customStatus.textContent = "Cleared. Paste a new problem + incorrect work.";
+        if(els.detectStatus) els.detectStatus.textContent = "Auto-detect ready.";
       }
 
       // -----------------------------
-      // Event wiring
+      // Events
       // -----------------------------
       if(els.grade){
         els.grade.addEventListener("change", function(e){
@@ -1777,7 +1761,6 @@
           renderItem(getNextItem());
         });
       }
-
       if(els.track){
         els.track.addEventListener("change", function(e){
           state.track = e.target.value;
@@ -1803,8 +1786,7 @@
       }
 
       if(scaleSlider){
-        var initialScale = scaleSlider.value ? (parseInt(scaleSlider.value,10)/100) : 1;
-        document.documentElement.style.setProperty("--mq-scale", initialScale);
+        document.documentElement.style.setProperty("--mq-scale", (parseInt(scaleSlider.value,10)||100)/100);
         scaleSlider.addEventListener("input", function(e){
           var value = parseInt(e.target.value,10) || 100;
           document.documentElement.style.setProperty("--mq-scale", value/100);
@@ -1907,13 +1889,28 @@
       populateMistakeTemplates();
       renderCustomList();
 
+      // Auto-detect on typing (debounced)
+      var detectTimer = null;
+      function scheduleDetect(){
+        if(detectTimer) clearTimeout(detectTimer);
+        detectTimer = setTimeout(function(){ applyAutoDetect(false); }, 250);
+      }
+      if(els.customPrompt) els.customPrompt.addEventListener("input", scheduleDetect);
+      if(els.customWork) els.customWork.addEventListener("input", scheduleDetect);
+
+      if(els.detectBtn){
+        els.detectBtn.addEventListener("click", function(){
+          applyAutoDetect(true);
+        });
+      }
+
       if(els.customStudyBtn){
         els.customStudyBtn.addEventListener("click", function(){
+          applyAutoDetect(false); // ensure best template selected
           var item = buildCustomItem();
           if(!item) return;
           saveCustomItem(item);
           if(els.customStatus) els.customStatus.textContent = "Saved + loading study item now.";
-          // also align grade/track to keep headers consistent
           state.gradeBand = item.gradeBand;
           state.track = item.track;
           syncSelectorsFromState();
@@ -1924,6 +1921,7 @@
 
       if(els.customSaveBtn){
         els.customSaveBtn.addEventListener("click", function(){
+          applyAutoDetect(false);
           var item = buildCustomItem();
           if(!item) return;
           saveCustomItem(item);
@@ -1932,9 +1930,7 @@
       }
 
       if(els.customClearBtn){
-        els.customClearBtn.addEventListener("click", function(){
-          clearCustomForm();
-        });
+        els.customClearBtn.addEventListener("click", function(){ clearCustomForm(); });
       }
 
       if(els.customDeleteAll){
@@ -1960,6 +1956,9 @@
       updateBadges();
       updateScoreboard();
       renderItem(getNextItem());
+
+      // Run detect once on load (safe)
+      applyAutoDetect(false);
     });
   </script>
 
